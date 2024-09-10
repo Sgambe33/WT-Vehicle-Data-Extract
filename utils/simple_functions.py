@@ -34,8 +34,9 @@ def getJson(path):
             data = json.load(f)
     return data
 
+
 def getVersion():
-    with open("War-Thunder-Datamine"+ "/aces.vromfs.bin_u/version" , 'r') as f:
+    with open(os.getenv("DATAMINE_LOCATION") + "/aces.vromfs.bin_u/version", 'r') as f:
         return f.read()
 
 
@@ -53,30 +54,33 @@ def value_from_dict(dictionary: dict, key: str, fall_back_value: any = None):
     if dictionary is None or key is None: return fall_back_value
     return dictionary[key] if key in dictionary else fall_back_value
 
+
 def proper_round(num):
     abs_value = abs(num)
     if abs_value - int(abs_value) >= 0.5:
         return int(num) + 1 if num > 0 else int(num) - 1
     return int(num)
 
-def traverse_shop(shop, lookup_key:str=None, lookup_attribute: str = "marketplaceItemdefId")-> bool:
-    if(isinstance(shop, list)):
+
+def traverse_shop(shop, lookup_key: str = None, lookup_attribute: str = "marketplaceItemdefId") -> bool:
+    if isinstance(shop, list):
         for techtree in shop:
             if traverse_shop(techtree, lookup_key, lookup_attribute):
                 return True
-    elif(isinstance(shop, dict)):
+    elif isinstance(shop, dict):
         for key in shop:
-            if(key != "image" and key != "reqAir"):
-                if("_group" not in key):
+            if key != "image" and key != "reqAir":
+                if "_group" not in key:
                     try:
                         if key == lookup_key and value_from_dict(shop[key], lookup_attribute) is not None:
                             return True
                     except KeyError:
                         pass
-                if("_group" in key):
+                if "_group" in key:
                     if traverse_shop(shop[key], lookup_key, lookup_attribute):
                         return True
     return False
+
 
 def get_type_key(vehicle_type):
     type_key_mapping = {
@@ -86,7 +90,7 @@ def get_type_key(vehicle_type):
         'attack_helicopter': 'helicopters',
         'utility_helicopter': 'helicopters',
 
-        'tank' : 'army',
+        'tank': 'army',
         'light_tank': 'army',
         'medium_tank': 'army',
         'heavy_tank': 'army',
@@ -98,7 +102,7 @@ def get_type_key(vehicle_type):
         'exoskeleton': 'army',
 
         'ship': 'ships',
-        'light_cruiser' : 'ships',
+        'light_cruiser': 'ships',
         'frigate': 'ships',
         'heavy_cruiser': 'ships',
         'battlecruiser': 'ships',
@@ -110,17 +114,20 @@ def get_type_key(vehicle_type):
 
     return type_key_mapping.get(vehicle_type, 'boats')
 
-def is_vehicle_on_marketplace(shop, identifier, country, vehicle_type)-> bool:
+
+def is_vehicle_on_marketplace(shop, identifier, country, vehicle_type) -> bool:
     country_key = "country_" + country
     type_key = get_type_key(vehicle_type)
     return traverse_shop(shop[country_key][type_key]["range"], identifier)
 
-def is_squadron_vehicle(shop, identifier, country, vehicle_type)->bool:
+
+def is_squadron_vehicle(shop, identifier, country, vehicle_type) -> bool:
     country_key = "country_" + country
     type_key = get_type_key(vehicle_type)
     return traverse_shop(shop[country_key][type_key]["range"], identifier, "isClanVehicle")
 
-def is_pack(shop, identifier, country, vehicle_type)->bool:
+
+def is_pack(shop, identifier, country, vehicle_type) -> bool:
     country_key = "country_" + country
     type_key = get_type_key(vehicle_type)
     return traverse_shop(shop[country_key][type_key]["range"], identifier, "gift")
