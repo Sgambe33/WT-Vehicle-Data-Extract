@@ -17,6 +17,7 @@ from classes.Weapon import Weapon
 from utils.constants import *
 from utils.custom_logging import *
 from utils.simple_functions import *
+from utils.update_localization import ALL_WEAPONS, ALL_AMMOS, ALL_EXPLOSIVES, ALL_AMMO_TYPES
 
 
 def get_vehicle_fetch_url(vehicle_name: str, unit_type_uri='/units/tankmodels'):
@@ -65,7 +66,7 @@ def create_vehicle(v_name: str, v_fetch_path: str) -> Vehicle | None:
     return data
 
 
-def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type: str | None) -> Vehicle:
+def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type: str | None) -> Vehicle | None:
     """Create all vehicle's data
 
     Args:
@@ -92,10 +93,10 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     country = country.replace('country_', '').lower() if country is not None else country
     vehicle.country = country
     vehicle.identifier = v_name
-    
+
     tags: dict = value_from_dict(value_from_dict(UNIT_TAGS, v_name), "tags")
     types = [x.replace("type_", "").lower() for x in tags.keys() if (x != "boat" or x != "ship") and x.startswith("type_")]
-    for vehicle_type in types:        
+    for vehicle_type in types:
         if vehicle_type in SEA_TYPES2:
             vehicle.vehicle_type = vehicle_type
             break
@@ -145,7 +146,7 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     vehicle.train2_cost = value_from_dict(vehicle_data, 'train2Cost', 0)
     vehicle.train3_cost_gold = value_from_dict(vehicle_data, 'train3Cost_gold', 0)
     vehicle.train3_cost_exp = value_from_dict(vehicle_data, 'train3Cost_exp', 0)
-    vehicle.sl_mul_arcade = value_from_dict(vehicle_data, 'rewardMulArcade', 0.0) 
+    vehicle.sl_mul_arcade = value_from_dict(vehicle_data, 'rewardMulArcade', 0.0)
     vehicle.sl_mul_realistic = value_from_dict(vehicle_data, 'rewardMulHistorical', 0.0)
     vehicle.sl_mul_simulator = value_from_dict(vehicle_data, 'rewardMulSimulation', 0.0)
     vehicle.exp_mul = value_from_dict(vehicle_data, 'expMul', 0.0)
@@ -191,8 +192,8 @@ def create_vehicle_data_engine(v_fetch_path: str, vehicle_phys: dict, vehicle_ta
     if "ships" in v_fetch_path:
         engine = value_from_dict(vehicle_phys, 'engines')
         max_speed = value_from_dict(engine, 'maxSpeed', 0)
-        max_rev_speed = value_from_dict(engine, 'maxRevSpeed', value_from_dict(engine, 'maxReverseSpeed', 0))        
-        final_engine.max_speed_rb_sb= floor(max_speed * 3.6 if type(max_speed) is float else max_speed[0] * 3.6)
+        max_rev_speed = value_from_dict(engine, 'maxRevSpeed', value_from_dict(engine, 'maxReverseSpeed', 0))
+        final_engine.max_speed_rb_sb = floor(max_speed * 3.6 if type(max_speed) is float else max_speed[0] * 3.6)
         final_engine.max_reverse_speed_rb_sb = floor(max_rev_speed * 3.6 if isinstance(max_rev_speed, Number) else max_rev_speed[0] * 3.6)
         final_engine.max_speed_ab = proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_SHIP)
         final_engine.max_reverse_speed_ab = proper_round(final_engine.max_reverse_speed_rb_sb * ENGINE_SPEED_AB_MUL_SHIP)
@@ -330,7 +331,7 @@ def create_vehicle_night_vision(v_details: dict, vehicle_type: str) -> tuple[Nig
             setattr(device_obj, attribute, generation_dict.get(resolution))
         else:
             return None, None
-        
+
     if ir_devices.is_all_null() and thermal_devices.is_all_null():
         return None, None
     if ir_devices.is_all_null():
@@ -491,6 +492,7 @@ def create_weapon_details(weapon_path: str, count: int = 1):
     weapon.count = count
 
     weapon.ammos = final_ammos
+    ALL_WEAPONS.add(weapon.name)
 
     return weapon
 
@@ -536,13 +538,22 @@ def create_ammo(raw_ammo: dict):
 
     out: Ammo = Ammo()
     out.name = name
-    out.type = _type
+    # If type is a list, get the first element
+    out.type = _type[0] if type(_type) is list else _type
     out.caliber = caliber
     out.mass = mass
     out.speed = speed
     out.max_distance = max_distance
     out.explosive_type = explosive_type
     out.explosive_mass = explosive_mass
+
+    # For localization
+    if out.name is not None:
+        ALL_AMMOS.add(out.name)
+    if out.explosive_type is not None:
+        ALL_EXPLOSIVES.add(explosive_type)
+    if out.type is not None:
+        ALL_AMMO_TYPES.add(out.type)
     return out
 
 
@@ -678,4 +689,3 @@ def group_and_increment(set_of_items, property_name):
         else:
             item_dict[property_value].count += item.count
     return list(item_dict.values())
-
