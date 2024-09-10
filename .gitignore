@@ -1,43 +1,33 @@
-pyenv
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+
+# Virtual environments
 /venv
-.idea
+pyenv
+
+# IDEs and editors
+.idea/
+.vscode/
+
+# Logs and output
 *.log
 out.json
 test.py
 wpcost.json
-.vscode
-.env
-/nations/britain/britainFinalAircrafts.json
-/nations/britain/britainFinalShips.json
-/nations/britain/britainFinalTanks.json
-/nations/china/chinaFinalAircrafts.json
-/nations/china/chinaFinalTanks.json
-/nations/france/franceFinalAircrafts.json
-/nations/france/franceFinalShips.json
-/nations/france/franceFinalTanks.json
-/nations/germany/germanyFinalAircrafts.json
-/nations/germany/germanyFinalShips.json
-/nations/germany/germanyFinalTanks.json
-/nations/israel/israelFinalAircrafts.json
-/nations/israel/israelFinalTanks.json
-/nations/italy/italyFinalAircrafts.json
-/nations/italy/italyFinalShips.json
-/nations/italy/italyFinalTanks.json
-/nations/japan/japanFinalAircrafts.json
-/nations/japan/japanFinalShips.json
-/nations/japan/japanFinalTanks.json
-/nations/sweden/swedenFinalAircrafts.json
-/nations/sweden/swedenFinalTanks.json
-/nations/usa/usaFinalAircrafts.json
-/nations/usa/usaFinalShips.json
-/nations/usa/usaFinalTanks.json
-/nations/ussr/ussrFinalAircrafts.json
-/nations/ussr/ussrFinalShips.json
-/nations/ussr/ussrFinalTanks.json
-*.sqlite3
-*.sqlite3-shm
-*.sqlite3-wal
-*.png
+
+# Project-specific files
+/utils/.env
 diff_viewer.py
 achievements.py
+
+# Nation-specific JSON files
+/nations/*/*FinalAircrafts.json
+/nations/*/*FinalShips.json
+/nations/*/*FinalTanks.json
+
+# Images
+*.png
