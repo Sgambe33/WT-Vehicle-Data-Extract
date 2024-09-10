@@ -4,19 +4,14 @@ from peewee import DoesNotExist, chunked
 from playhouse.shortcuts import model_to_dict
 from tqdm import tqdm
 from dotenv import load_dotenv
-
-from utils import cLogger
+from utils import cLogger, COUNTRIES
 from .models import db, Vehicle, VehicleOld
-
-COUNTRY_LIST = ["britain", "china", "france", "germany", "israel", "italy", "japan", "sweden", "usa", "ussr"]
 
 load_dotenv()
 
-def create_tables():
-    db.create_tables([Vehicle, VehicleOld])
 
 def update_db():
-    for country in COUNTRY_LIST:
+    for country in COUNTRIES:
         cLogger.info(f'Updating {country}')
         for vehicle_category in ['Aircrafts', 'Tanks', 'Ships']:
             try:

@@ -2,30 +2,26 @@ import filecmp
 import os
 import json
 import shutil
-import paramiko as pk
-import requests
 from tqdm import tqdm
 from dotenv import load_dotenv
-from scp import SCPClient
-
 from utils import cLogger
 from utils.simple_functions import value_from_dict
-from utils.constants import MODIFICATIONS
-from datetime import datetime, timedelta
-
+from utils.constants import MODIFICATIONS, COUNTRIES, AIR_CLASSES, GROUND_CLASSES, SEA_CLASSES
 
 load_dotenv()
-COUNTRIES = ["ussr", "usa", "china", "japan", "italy",
-             "germany", "israel", "sweden", "britain", "france"]
-AIR_CLASSES = ["exp_fighter", "exp_bomber", "exp_assault", "exp_helicopter"]
-GROUND_CLASSES = ["exp_tank", "exp_tank_destroyer",
-                  "exp_SPAA", "exp_heavy_tank"]
-SEA_CLASSES = ["exp_cruiser", "exp_destroyer", "exp_gun_boat", "exp_torpedo_boat",
-               "exp_submarine_chaser", "exp_torpedo_gun_boat", "exp_naval_ferry_barge"]
 
 
 def update_dataset():
-    with open("War-Thunder-Datamine" + "/char.vromfs.bin_u/config/wpcost.blkx", "r", encoding="UTF-8") as f:
+    """
+    Update the dataset by processing the `wpcost.blkx` file.
+
+    This function reads the `wpcost.blkx` file and then iterates
+    over the countries to create JSON files for air, ground, and sea units.
+
+    Returns:
+        None
+    """
+    with open(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/wpcost.blkx", "r", encoding="UTF-8") as f:
         wpcost = json.load(f)
 
     del wpcost["economicRankMax"]
@@ -68,7 +64,24 @@ def update_dataset():
                 json.dump(sea_list, f, indent=3)
 
 
-def update_images():
+def update_images() -> None:
+    """
+    Update images by moving them from source directories to destination directories.
+
+    This function iterates over a predefined set of source directories and moves images
+    to corresponding destination directories. It checks if the images already exist in
+    the destination and only copies them if they do not exist or are different.
+
+    Directories:
+        - "/atlases.vromfs.bin_u/units": "./assets/techtrees/"
+        - "/tex.vromfs.bin_u/tanks": "./assets/images/"
+        - "/tex.vromfs.bin_u/ships": "./assets/images/"
+        - "/tex.vromfs.bin_u/aircrafts": "./assets/images/"
+        - "/atlases.vromfs.bin_u/gameuiskin": "./assets/modifications/"
+
+    Returns:
+        None
+    """
     directories = {
         "/atlases.vromfs.bin_u/units": "./assets/techtrees/",
         "/tex.vromfs.bin_u/tanks": "./assets/images/",
@@ -77,20 +90,20 @@ def update_images():
         "/atlases.vromfs.bin_u/gameuiskin": "./assets/modifications/"
     }
 
-    for dir, dest in directories.items():
-        cLogger.info(f"Updating {dir} to {dest}")
-        path = "War-Thunder-Datamine" + dir
+    for source_dir, dest_dir in directories.items():
+        cLogger.info(f"Moving images from {source_dir} to {dest_dir} if necessary")
+        path = os.getenv("DATAMINE_LOCATION") + source_dir
         files = os.listdir(path)
         for file in tqdm(files):
-            if dir == "/atlases.vromfs.bin_u/gameuiskin" and not valid_mod_icon(file.replace(".png", "")):
+            if source_dir == "/atlases.vromfs.bin_u/gameuiskin" and not valid_mod_icon(file.replace(".png", "")):
                 continue
             source = os.path.join(path, file)
-            destination = os.path.join(os.path.abspath(dest), file)
+            destination = os.path.join(os.path.abspath(dest_dir), file)
             if not os.path.exists(destination) or not filecmp.cmp(source, destination):
                 shutil.copy(source, destination)
 
 
-def valid_mod_icon(file: str):
+def valid_mod_icon(file: str) -> bool:
     """Check if the icon is valid for a modification.
 
     Returns:
