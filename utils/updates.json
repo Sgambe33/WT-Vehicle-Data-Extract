@@ -1,0 +1,32 @@
+[
+    {
+        "version":"2.27.2.59",
+        "commithash": "b0f14ce5d7100d530d7fca6ead0084c532a1c7a5",
+        "date":"14-06-2023"
+    },
+    {
+        "version":"2.29.0.111",
+        "commithash": "2dee8ab5051080420404bf1c3b22c6ecc582f384",
+        "date":"20-10-2023"
+    },
+    {
+        "version":"2.31.1.65",
+        "commithash": "25ba8b85db22a4a4509e5ca3b741f52f173d54c7",
+        "date":"07-12-2023"
+    },
+    {
+        "version":"2.33.0.161",
+        "commithash": "55cedfc96eb727532cb83c854ed9df5cb6d7d41c",
+        "date":"01-03-2024"
+    },
+    {
+        "version":"2.35.1.112",
+        "commithash": "246d8663535020979b09f8259ebf0d1db76df73a",
+        "date":"31-05-2024"
+    },
+    {
+        "version":"2.37.0.164",
+        "commithash": "1846dd744d7f55a8b769839e41fb911f1cc33d70",
+        "date":"26-08-2024"
+    }
+]
