@@ -1,13 +1,10 @@
-from peewee import *
-import os
-#from playhouse.sqlite_ext import JSONField
-from playhouse.postgres_ext import JSONField
+from peewee import TextField, IntegerField, FloatField, BooleanField, SqliteDatabase, Model, CompositeKey
+from playhouse.sqlite_ext import JSONField
 
-# db = SqliteDatabase('testing.sqlite3', pragmas={
-#     'journal_mode': 'wal',
-#     'cache_size': -1024 * 64})
+db = SqliteDatabase('vehiclesdb.sqlite3', pragmas={
+    'journal_mode': 'wal',
+    'cache_size': -1024 * 64})
 
-db = PostgresqlDatabase('vehiclesdb', user=os.environ.get("XATA_USER", "<unknown"), password=os.environ.get("XATA_API_KEY", "<unknown"), host='eu-central-1.sql.xata.sh', port=5432)
 
 class BaseModel(Model):
     class Meta:
@@ -74,7 +71,7 @@ class Vehicle(BaseModel):
     weapons = JSONField(null=True, default=[])
     presets = JSONField(null=True, default=[])
     customizable_presets = JSONField(null=True, default=False)
-    
+
     class Meta:
         database = db
         db_table = 'vehicle'
@@ -145,3 +142,6 @@ class VehicleOld(BaseModel):
         database = db
         db_table = 'vehicleold'
         primary_key = CompositeKey('identifier', 'version')
+
+
+db.create_tables([Vehicle, VehicleOld], safe=True)
