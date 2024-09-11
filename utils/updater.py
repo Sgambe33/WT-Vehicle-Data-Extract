@@ -94,6 +94,7 @@ def update_images() -> None:
         cLogger.info(f"Moving images from {source_dir} to {dest_dir} if necessary")
         path = os.getenv("DATAMINE_LOCATION") + source_dir
         files = os.listdir(path)
+        os.makedirs(dest_dir, exist_ok=True)
         for file in tqdm(files):
             if source_dir == "/atlases.vromfs.bin_u/gameuiskin" and not valid_mod_icon(file.replace(".png", "")):
                 continue
