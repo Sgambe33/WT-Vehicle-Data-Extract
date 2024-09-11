@@ -18,7 +18,7 @@ This is a repo containing all the scripts used to parse data from War Thunder an
    ```
    DATAMINE_LOCATION="path/to/datamine/repo"
    ```
-
+   
 4. Run `python main.py` in the root directory of this repo.
 
 The full execution of the script will result in a database file being created in the root directory of this repo, JSON raw data files in each nation folder,
