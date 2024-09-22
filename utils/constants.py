@@ -23,9 +23,9 @@ MODIFICATIONS: dict = getJson(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin
 COUNTRIES = ["britain", "china", "france", "germany", "israel", "italy", "japan", "sweden", "usa", "ussr"]
 
 VEHICLE_FETCH_URI = {
-    'ground': '/units/tankmodels',
-    'sea': '/units/ships',
-    'air': '/flightmodels',
+    "ground": "/units/tankmodels",
+    "sea": "/units/ships",
+    "air": "/flightmodels",
 }
 
 ENGINE_HP_AB_MUL_TANK = 1.908
@@ -33,21 +33,21 @@ ENGINE_SPEED_AB_MUL_TANK = 1.101
 ENGINE_SPEED_AB_MUL_SHIP = 1.222
 ENGINE_SPEED_AB_MUL_AIR = 1.037
 
-CANNON_TYPE = 'bullet'
-ROCKET_TYPE = 'rocketGun'
-TORPEDO_TYPE = 'torpedoGun'
-BOMB_TYPE = 'bombGun'
-BOOSTER_TYPE = 'boosterGun'
-CONTAINER_TYPE = 'container'
-EXTFUELTANK_TYPE = 'fuelTankGun'
+CANNON_TYPE = "bullet"
+ROCKET_TYPE = "rocketGun"
+TORPEDO_TYPE = "torpedoGun"
+BOMB_TYPE = "bombGun"
+BOOSTER_TYPE = "boosterGun"
+CONTAINER_TYPE = "container"
+EXTFUELTANK_TYPE = "fuelTankGun"
 
-CANNON_NAME = 'cannon'
-ROCKET_NAME = 'rocket'
-TORPEDO_NAME = 'torpedo'
-BOMB_NAME = 'bomb'
-BOOSTER_NAME = 'payload'
-CONTAINER_NAME = 'container'
-EXTFUELTANK_NAME = 'payload'
+CANNON_NAME = "cannon"
+ROCKET_NAME = "rocket"
+TORPEDO_NAME = "torpedo"
+BOMB_NAME = "bomb"
+BOOSTER_NAME = "payload"
+CONTAINER_NAME = "container"
+EXTFUELTANK_NAME = "payload"
 
 THERMAL_VISION_GENERATIONS: dict = {
     (500, 300): "GEN1",
@@ -84,9 +84,9 @@ WATCHED_PATHS_IMGS = [
 
 BATTLE_RATINGS = [1.0, 1.3, 1.7, 2.0, 2.3, 2.7, 3.0, 3.3, 3.7, 4.0, 4.3, 4.7, 5.0, 5.3, 5.7, 6.0, 6.3, 6.7, 7.0, 7.3, 7.7, 8.0, 8.3, 8.7, 9.0, 9.3, 9.7, 10.0, 10.3, 10.7, 11.0, 11.3, 11.7, 12.0, 12.3, 12.7, 13.0, 13.3, 13.7]
 
-GROUND_TYPES: set[str] = {'light_tank', 'medium_tank', 'heavy_tank', 'tank_destroyer', 'spaa'}
-AIR_TYPES: set[str] = {'fighter', 'assault', 'bomber', 'helicopter'}
-SEA_TYPES: set[str] = {'destroyer', 'submarine_chaser', 'cruiser', 'battleship', 'gun_boat', 'torpedo_boat', 'torpedo_gun_boat', 'naval_ferry_barge'}
+GROUND_TYPES: set[str] = {"light_tank", "medium_tank", "heavy_tank", "tank_destroyer", "spaa"}
+AIR_TYPES: set[str] = {"fighter", "assault", "bomber", "helicopter"}
+SEA_TYPES: set[str] = {"destroyer", "submarine_chaser", "cruiser", "battleship", "gun_boat", "torpedo_boat", "torpedo_gun_boat", "naval_ferry_barge"}
 
 AIR_TYPES2: set[str] = {"attack_helicopter", "utility_helicopter", "fighter", "assault", "bomber"}
 GROUND_TYPES2: set[str] = {"tank", "light_tank", "medium_tank", "heavy_tank", "tank_destroyer", "spaa", "lbv", "mbv", "hbv", "exoskeleton"}

@@ -21,7 +21,7 @@ def update_dataset():
     Returns:
         None
     """
-    with open(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/wpcost.blkx", "r", encoding="UTF-8") as f:
+    with open(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/wpcost.blkx", 'r', encoding="UTF-8") as f:
         wpcost = json.load(f)
 
     del wpcost["economicRankMax"]
@@ -52,15 +52,15 @@ def update_dataset():
                 sea_list.append(i)
 
         if len(air_list) != 0:
-            with open(air_path, "w") as f:
+            with open(air_path, 'w') as f:
                 json.dump(air_list, f, indent=3)
 
         if len(ground_list) != 0:
-            with open(ground_path, "w") as f:
+            with open(ground_path, 'w') as f:
                 json.dump(ground_list, f, indent=3)
 
         if len(sea_list) != 0:
-            with open(sea_path, "w") as f:
+            with open(sea_path, 'w') as f:
                 json.dump(sea_list, f, indent=3)
 
 

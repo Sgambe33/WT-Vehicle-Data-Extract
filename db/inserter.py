@@ -12,26 +12,26 @@ load_dotenv()
 
 def update_db():
     for country in COUNTRIES:
-        cLogger.info(f'Updating {country}')
-        for vehicle_category in ['Aircrafts', 'Tanks', 'Ships']:
+        cLogger.info(f"Updating {country}")
+        for vehicle_category in ["Aircrafts", "Tanks", "Ships"]:
             try:
-                with open(f'nations/{country}/{country}Final{vehicle_category}.json', 'r') as file:
+                with open(f"nations/{country}/{country}Final{vehicle_category}.json", 'r') as file:
                     vehicles_data = json.load(file)
                     new_vehicles = []
                     for vehicle_data in tqdm(vehicles_data):
-                        current_version = vehicle_data.pop('version')
+                        current_version = vehicle_data.pop("version")
 
                         try:
-                            db_vehicle = Vehicle.get(Vehicle.identifier == vehicle_data['identifier'])
+                            db_vehicle = Vehicle.get(Vehicle.identifier == vehicle_data["identifier"])
                             db_vehicle_dict = model_to_dict(db_vehicle)
-                            db_version = db_vehicle_dict.pop('version')
+                            db_version = db_vehicle_dict.pop("version")
 
                             diff = DeepDiff(db_vehicle_dict, vehicle_data, ignore_order=True)
                             if len(diff.items()) > 0:
 
-                                if current_version.split('.')[0] >= db_version.split('.')[0] and current_version.split('.')[1] > db_version.split('.')[1]:
+                                if current_version.split(".")[0] >= db_version.split(".")[0] and current_version.split(".")[1] > db_version.split(".")[1]:
                                     # Put old vehicle in VehicleOld table
-                                    db_vehicle_dict['version'] = db_version
+                                    db_vehicle_dict["version"] = db_version
                                     VehicleOld.create(**db_vehicle_dict)
                                     db_vehicle.delete_instance()
 

@@ -1,9 +1,9 @@
 from peewee import TextField, IntegerField, FloatField, BooleanField, SqliteDatabase, Model, CompositeKey
 from playhouse.sqlite_ext import JSONField
 
-db = SqliteDatabase('vehiclesdb.sqlite3', pragmas={
-    'journal_mode': 'wal',
-    'cache_size': -1024 * 64})
+db = SqliteDatabase("vehiclesdb.sqlite3", pragmas={
+    "journal_mode": "wal",
+    "cache_size": -1024 * 64})
 
 
 class BaseModel(Model):
@@ -74,7 +74,7 @@ class Vehicle(BaseModel):
 
     class Meta:
         database = db
-        db_table = 'vehicle'
+        db_table = "vehicle"
 
 
 class VehicleOld(BaseModel):
@@ -140,8 +140,8 @@ class VehicleOld(BaseModel):
 
     class Meta:
         database = db
-        db_table = 'vehicleold'
-        primary_key = CompositeKey('identifier', 'version')
+        db_table = "vehicleold"
+        primary_key = CompositeKey("identifier", "version")
 
 
 db.create_tables([Vehicle, VehicleOld], safe=True)

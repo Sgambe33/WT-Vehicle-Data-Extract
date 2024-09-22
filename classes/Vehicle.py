@@ -26,7 +26,7 @@ class Vehicle:
         self.squadron_vehicle: bool = False
         self.ge_cost: int = 0
         self.crew_total_count: int = 0
-        self.visibility: int  = 0
+        self.visibility: int = 0
         self.hull_armor: list[int] = []
         self.turret_armor: list[int] = []
         self.mass: int = 0.0
@@ -35,7 +35,7 @@ class Vehicle:
         self.train3_cost_gold: int = 0
         self.train3_cost_exp: int = 0
         self.sl_mul_arcade: float = 0.0
-        self.sl_mul_realistic: float = 0.0  
+        self.sl_mul_realistic: float = 0.0
         self.sl_mul_simulator: float
         self.exp_mul: float = 0.0
         self.repair_time_arcade: float = 0.0

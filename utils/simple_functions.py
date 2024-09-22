@@ -5,7 +5,7 @@ import os
 def myFetch(path, isLocal=False):
     if not isLocal:
         pass
-    with open(path, 'r') as f:
+    with open(path, "r") as f:
         return json.load(f)
 
 
@@ -36,7 +36,7 @@ def getJson(path):
 
 
 def getVersion():
-    with open(os.getenv("DATAMINE_LOCATION") + "/aces.vromfs.bin_u/version", 'r') as f:
+    with open(os.getenv("DATAMINE_LOCATION") + "/aces.vromfs.bin_u/version", "r") as f:
         return f.read()
 
 
@@ -84,35 +84,33 @@ def traverse_shop(shop, lookup_key: str = None, lookup_attribute: str = "marketp
 
 def get_type_key(vehicle_type):
     type_key_mapping = {
-        'fighter': 'aviation',
-        'assault': 'aviation',
-        'bomber': 'aviation',
-        'attack_helicopter': 'helicopters',
-        'utility_helicopter': 'helicopters',
-
-        'tank': 'army',
-        'light_tank': 'army',
-        'medium_tank': 'army',
-        'heavy_tank': 'army',
-        'tank_destroyer': 'army',
-        'spaa': 'army',
-        'lbv': 'army',
-        'mbv': 'army',
-        'hbv': 'army',
-        'exoskeleton': 'army',
-
-        'ship': 'ships',
-        'light_cruiser': 'ships',
-        'frigate': 'ships',
-        'heavy_cruiser': 'ships',
-        'battlecruiser': 'ships',
-        'destroyer': 'ships',
-        'submarine': 'ships',
-        'battleship': 'ships'
+        "fighter": "aviation",
+        "assault": "aviation",
+        "bomber": "aviation",
+        "attack_helicopter": "helicopters",
+        "utility_helicopter": "helicopters",
+        "tank": "army",
+        "light_tank": "army",
+        "medium_tank": "army",
+        "heavy_tank": "army",
+        "tank_destroyer": "army",
+        "spaa": "army",
+        "lbv": "army",
+        "mbv": "army",
+        "hbv": "army",
+        "exoskeleton": "army",
+        "ship": "ships",
+        "light_cruiser": "ships",
+        "frigate": "ships",
+        "heavy_cruiser": "ships",
+        "battlecruiser": "ships",
+        "destroyer": "ships",
+        "submarine": "ships",
+        "battleship": "ships"
     }
-    type_key_mapping.update({ground_type: 'army' for ground_type in ['light_tank', 'medium_tank', 'heavy_tank', 'tank_destroyer', 'spaa']})
+    type_key_mapping.update({ground_type: "army" for ground_type in ["light_tank", "medium_tank", "heavy_tank", "tank_destroyer", "spaa"]})
 
-    return type_key_mapping.get(vehicle_type, 'boats')
+    return type_key_mapping.get(vehicle_type, "boats")
 
 
 def is_vehicle_on_marketplace(shop, identifier, country, vehicle_type) -> bool:
