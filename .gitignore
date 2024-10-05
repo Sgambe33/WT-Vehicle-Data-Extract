@@ -20,14 +20,14 @@ test.py
 wpcost.json
 
 # Project-specific files
-/utils/.env
+/.env
 diff_viewer.py
 achievements.py
 
 # Nation-specific JSON files
-/nations/*/*FinalAircrafts.json
-/nations/*/*FinalShips.json
-/nations/*/*FinalTanks.json
+/generatedAssets/nations/*/*FinalAircrafts.json
+/generatedAssets/nations/*/*FinalShips.json
+/generatedAssets/nations/*/*FinalTanks.json
 
 # Images
 *.png
