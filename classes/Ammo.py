@@ -4,13 +4,13 @@ import json
 
 class Ammo:
     def __init__(self):
-        self.name: str = None
-        self.type: str = None
+        self.name: str | None = None
+        self.type: str | None = None
         self.caliber: float = 0.0
         self.mass: float = 0.0
         self.speed: float = 0.0
         self.max_distance: float = 0.0
-        self.explosive_type: str = None
+        self.explosive_type: str | None = None
         self.explosive_mass: float = 0.0
 
     def __str__(self):

@@ -1,5 +1,5 @@
 class Aerodynamics:
-    def __init__(self, ):
+    def __init__(self):
         self.length: float = 0.0
         self.wingspan: float = 0.0
         self.wing_area: float = 0.0

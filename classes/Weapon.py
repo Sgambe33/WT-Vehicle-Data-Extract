@@ -3,8 +3,8 @@ from classes import Ammo
 
 class Weapon:
     def __init__(self):
-        self.name: str = None
-        self.weapon_type: str = None
+        self.name: str | None = None
+        self.weapon_type: str | None = None
         self.count: int = 1
         self.ammos: list[Ammo] = []
 

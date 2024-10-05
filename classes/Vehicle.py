@@ -5,13 +5,13 @@ from classes.CustomizablePreset import CustomizablePreset
 
 class Vehicle:
     def __init__(self):
-        self.country: str = None
-        self.identifier: str = None
-        self.vehicle_type: str = None
+        self.country: str | None = None
+        self.identifier: str | None = None
+        self.vehicle_type: str | None = None
         self.vehicle_sub_types: list[str] = []
-        self.event: str = None
-        self.release_date: str = None
-        self.version: str = None
+        self.event: str | None = None
+        self.release_date: str | None = None
+        self.version: str | None = None
         self.era: int = 0
         self.arcade_br: float = 1.0
         self.realistic_br: float = 1.0
@@ -53,7 +53,7 @@ class Vehicle:
         self.repair_cost_full_upgraded_arcade: int = 0
         self.repair_cost_full_upgraded_realistic: int = 0
         self.repair_cost_full_upgraded_simulator: int = 0
-        self.required_vehicle: str = None
+        self.required_vehicle: str | None = None
         self.engine: Engine = None
         self.modifications: list[Modification] = []
         self.ir_devices: NightVisionDevice = None

@@ -3,7 +3,7 @@ from classes import Weapon
 
 class Preset:
     def __init__(self):
-        self.name: str = None
+        self.name: str | None = None
         self.weapons: list[Weapon] = []
 
     def __str__(self):

@@ -1,14 +1,14 @@
 class Modification:
     def __init__(self):
-        self.name: str = None
+        self.name: str | None = None
         self.tier: int = 0
         self.repair_coeff: float = 0.0
         self.value: int = 0
         self.req_exp: int = 0
         self.ge_cost: int = 0
-        self.required_modification: str = None
-        self.mod_class: str = None
-        self.icon: str = None
+        self.required_modification: str | None = None
+        self.mod_class: str | None = None
+        self.icon: str | None = None
 
     def __str__(self):
         return f"Modification: {self.name}, {self.tier}, {self.repair_coeff}, {self.value}, {self.req_exp}, {self.ge_cost}, {self.required_modification}"
