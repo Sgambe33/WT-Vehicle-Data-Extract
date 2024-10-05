@@ -132,8 +132,8 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     vehicle.is_pack = False if (vehicle.on_marketplace or vehicle.squadron_vehicle or not vehicle.is_premium) else is_pack(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
     vehicle.ge_cost = value_from_dict(vehicle_data, "costGold", 0)
     vehicle.crew_total_count = value_from_dict(vehicle_data, "crewTotalCount", 0)
-    vehicle.hull_armor = value_from_dict(vehicle_tags, "armorThicknessHull", [])
-    vehicle.turret_armor = value_from_dict(vehicle_tags, "armorThicknessTurret", [])
+    vehicle.hull_armor = get_armor_thickness(v_details, vehicle_tags, "hull")
+    vehicle.turret_armor = get_armor_thickness(v_details, vehicle_tags, "turret")
 
     vehicle_phys_mass = value_from_dict(vehicle_phys, "Mass", value_from_dict(vehicle_phys, "mass"))
     empty_mass = value_from_dict(vehicle_phys_mass, "Empty", 0.0)
@@ -177,6 +177,45 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     return vehicle
 
 
+def get_armor_thickness(v_details: dict, vehicle_tags: dict, part: str) -> list[int]:
+    """Get vehicle"s armor thickness
+
+    Args:
+        v_details (dict): vehicle"s fetched details
+        vehicle_tags (_type_): vehicle"s fetched unittags
+        part (str): part of the vehicle (hull or turret)
+
+    Returns:
+        list[int]: list of armor thicknesses [front, side, back]
+    """
+    armor = [0, 0, 0]
+    # Method 1: look for armor thickness in the vehicle tags
+    if part == "hull":
+        armor = value_from_dict(vehicle_tags, "armorThicknessHull", [0, 0, 0])
+    elif part == "turret":
+        armor = value_from_dict(vehicle_tags, "armorThicknessTurret", [0, 0, 0])
+    if armor != [0, 0, 0]: return armor
+
+    # Method 2: fallback if method 1 fails
+    damage_parts = value_from_dict(v_details, "DamageParts")
+    if damage_parts is None: return armor
+    damage_part = value_from_dict(damage_parts, part)
+    if damage_part is None: return armor
+    if part == "hull":
+        armor = [
+            value_from_dict(value_from_dict(damage_part, "body_front_dm"), "armorThickness", 0),
+            value_from_dict(value_from_dict(damage_part, "body_side_dm"), "armorThickness", 0),
+            value_from_dict(value_from_dict(damage_part, "body_back_dm"), "armorThickness", 0)
+        ]
+    elif part == "turret":
+        armor = [
+            value_from_dict(value_from_dict(damage_part, "turret_front_dm"), "armorThickness", 0),
+            value_from_dict(value_from_dict(damage_part, "turret_side_dm"), "armorThickness", 0),
+            value_from_dict(value_from_dict(damage_part, "turret_back_dm"), "armorThickness", 0)
+        ]
+    return armor
+
+
 def create_vehicle_data_engine(v_fetch_path: str, vehicle_phys: dict, vehicle_tags: dict) -> Engine:
     """Create vehicle"s engine data
 
@@ -197,7 +236,6 @@ def create_vehicle_data_engine(v_fetch_path: str, vehicle_phys: dict, vehicle_ta
         final_engine.max_reverse_speed_rb_sb = floor(max_rev_speed * 3.6 if isinstance(max_rev_speed, Number) else max_rev_speed[0] * 3.6)
         final_engine.max_speed_ab = proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_SHIP)
         final_engine.max_reverse_speed_ab = proper_round(final_engine.max_reverse_speed_rb_sb * ENGINE_SPEED_AB_MUL_SHIP)
-
 
     elif "flightmodels" in v_fetch_path:
         final_engine.max_speed_rb_sb = floor(value_from_dict(vehicle_tags, "maxSpeed", 0) * 3.6)
