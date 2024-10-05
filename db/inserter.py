@@ -3,11 +3,8 @@ from deepdiff import DeepDiff
 from peewee import DoesNotExist, chunked
 from playhouse.shortcuts import model_to_dict
 from tqdm import tqdm
-from dotenv import load_dotenv
 from utils import cLogger, COUNTRIES
 from .models import db, Vehicle, VehicleOld
-
-load_dotenv()
 
 
 def update_db():
@@ -15,7 +12,7 @@ def update_db():
         cLogger.info(f"Updating {country}")
         for vehicle_category in ["Aircrafts", "Tanks", "Ships"]:
             try:
-                with open(f"nations/{country}/{country}Final{vehicle_category}.json", 'r') as file:
+                with open(f"./generatedAssets/nations/{country}/{country}Final{vehicle_category}.json", 'r') as file:
                     vehicles_data = json.load(file)
                     new_vehicles = []
                     for vehicle_data in tqdm(vehicles_data):

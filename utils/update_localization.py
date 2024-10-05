@@ -53,10 +53,10 @@ ALL_EXPLOSIVES: set[str] = set()
 UNITS_LANG_CSV = pd.read_csv(UNITS_LANG, delimiter=";", encoding="UTF-8")
 UNITS_LANG_CSV.set_index("<ID|readonly|noverify>", inplace=True)
 
-MODIFICATIONS_LANG_CSV = pd.read_csv(os.path.join(os.getenv("DATAMINE_LOCATION"), "lang.vromfs.bin_u/lang/units_modifications.csv"), delimiter=";", encoding="utf-8")
+MODIFICATIONS_LANG_CSV = pd.read_csv(os.path.join(DATAMINE_LOCATION, "lang.vromfs.bin_u/lang/units_modifications.csv"), delimiter=";", encoding="utf-8")
 MODIFICATIONS_LANG_CSV.set_index("<ID|readonly|noverify>", inplace=True)
 
-WEAPONRY_LANG_CSV = pd.read_csv(os.path.join(os.getenv("DATAMINE_LOCATION"), "lang.vromfs.bin_u/lang/units_weaponry.csv"), delimiter=";", encoding="utf-8")
+WEAPONRY_LANG_CSV = pd.read_csv(os.path.join(DATAMINE_LOCATION, "lang.vromfs.bin_u/lang/units_weaponry.csv"), delimiter=";", encoding="utf-8")
 WEAPONRY_LANG_CSV.set_index("<ID|readonly|noverify>", inplace=True)
 
 
@@ -88,7 +88,8 @@ def sanitize_language_data():
             vehicles[key] = value.replace("\u00a0", " ")
 
 
-def generate_locales(destination_path):
+def generate_locales():
+    destination_path = "./generatedAssets/locales"
     vehicles_identifiers = [v.identifier for v in Vehicle.select(Vehicle.identifier)]
     vehicles_modifications = [v.modifications for v in Vehicle.select(Vehicle.modifications)]
     vehicles_modifications_names = set()

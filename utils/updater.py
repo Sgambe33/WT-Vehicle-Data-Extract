@@ -26,29 +26,26 @@ def update_dataset():
 
     del wpcost["economicRankMax"]
 
-    for n in tqdm(COUNTRIES):
+    for nation in tqdm(COUNTRIES):
         air_list = []
         ground_list = []
         sea_list = []
-        country_dir = os.path.abspath("./nations/" + n)
+        country_dir = os.path.abspath("./generatedAssets/nations/" + nation)
 
         if not os.path.exists(country_dir):
             os.makedirs(country_dir)
 
-        air_path = os.path.abspath(
-            "./nations/" + n + "/country_" + n + "_air.json")
-        ground_path = os.path.abspath(
-            "./nations/" + n + "/country_" + n + "_ground.json")
-        sea_path = os.path.abspath(
-            "./nations/" + n + "/country_" + n + "_sea.json")
+        air_path = os.path.abspath("./generatedAssets/nations/" + nation + "/country_" + nation + "_air.json")
+        ground_path = os.path.abspath("./generatedAssets/nations/" + nation + "/country_" + nation + "_ground.json")
+        sea_path = os.path.abspath("./generatedAssets/nations/" + nation + "/country_" + nation + "_sea.json")
 
         for i in wpcost:
 
-            if wpcost[i]["unitClass"] in AIR_CLASSES and wpcost[i]["country"] == "country_" + n:
+            if wpcost[i]["unitClass"] in AIR_CLASSES and wpcost[i]["country"] == "country_" + nation:
                 air_list.append(i)
-            elif wpcost[i]["unitClass"] in GROUND_CLASSES and wpcost[i]["country"] == "country_" + n:
+            elif wpcost[i]["unitClass"] in GROUND_CLASSES and wpcost[i]["country"] == "country_" + nation:
                 ground_list.append(i)
-            elif wpcost[i]["unitClass"] in SEA_CLASSES and wpcost[i]["country"] == "country_" + n:
+            elif wpcost[i]["unitClass"] in SEA_CLASSES and wpcost[i]["country"] == "country_" + nation:
                 sea_list.append(i)
 
         if len(air_list) != 0:
@@ -68,30 +65,30 @@ def update_images() -> None:
     """
     Update images by moving them from source directories to destination directories.
 
-    This function iterates over a predefined set of source directories and moves images
-    to corresponding destination directories. It checks if the images already exist in
+    This function iterates over a predefined set of source directories and moves statcards
+    to corresponding destination directories. It checks if the statcards already exist in
     the destination and only copies them if they do not exist or are different.
 
     Directories:
-        - "/atlases.vromfs.bin_u/units": "./assets/techtrees/"
-        - "/tex.vromfs.bin_u/tanks": "./assets/images/"
-        - "/tex.vromfs.bin_u/ships": "./assets/images/"
-        - "/tex.vromfs.bin_u/aircrafts": "./assets/images/"
-        - "/atlases.vromfs.bin_u/gameuiskin": "./assets/modifications/"
+        - "/atlases.vromfs.bin_u/units": "./generatedAssets/images/techtrees/"
+        - "/tex.vromfs.bin_u/tanks": "./generatedAssets/images/statcards/"
+        - "/tex.vromfs.bin_u/ships": "./generatedAssets/images/statcards/"
+        - "/tex.vromfs.bin_u/aircrafts": "./generatedAssets/images/statcards/"
+        - "/atlases.vromfs.bin_u/gameuiskin": "./generatedAssets/images/modifications/"
 
     Returns:
         None
     """
     directories = {
-        "/atlases.vromfs.bin_u/units": "./assets/techtrees/",
-        "/tex.vromfs.bin_u/tanks": "./assets/images/",
-        "/tex.vromfs.bin_u/ships": "./assets/images/",
-        "/tex.vromfs.bin_u/aircrafts": "./assets/images/",
-        "/atlases.vromfs.bin_u/gameuiskin": "./assets/modifications/"
+        "/atlases.vromfs.bin_u/units": "./generatedAssets/images/techtrees/",
+        "/tex.vromfs.bin_u/tanks": "./generatedAssets/images/statcards/",
+        "/tex.vromfs.bin_u/ships": "./generatedAssets/images/statcards/",
+        "/tex.vromfs.bin_u/aircrafts": "./generatedAssets/images/statcards/",
+        "/atlases.vromfs.bin_u/gameuiskin": "./generatedAssets/images/modifications/"
     }
 
     for source_dir, dest_dir in directories.items():
-        cLogger.info(f"Moving images from {source_dir} to {dest_dir} if necessary")
+        cLogger.info(f"Moving statcards from {source_dir} to {dest_dir} if necessary")
         path = os.getenv("DATAMINE_LOCATION") + source_dir
         files = os.listdir(path)
         os.makedirs(dest_dir, exist_ok=True)

@@ -1,7 +1,7 @@
 from peewee import TextField, IntegerField, FloatField, BooleanField, SqliteDatabase, Model, CompositeKey
 from playhouse.sqlite_ext import JSONField
 
-db = SqliteDatabase("vehiclesdb.sqlite3", pragmas={
+db = SqliteDatabase("./generatedAssets/vehiclesdb.sqlite3", pragmas={
     "journal_mode": "wal",
     "cache_size": -1024 * 64})
 
