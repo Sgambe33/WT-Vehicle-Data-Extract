@@ -1,9 +1,7 @@
 from peewee import TextField, IntegerField, FloatField, BooleanField, SqliteDatabase, Model, CompositeKey
 from playhouse.sqlite_ext import JSONField
 
-db = SqliteDatabase("./generatedAssets/vehiclesdb.sqlite3", pragmas={
-    "journal_mode": "wal",
-    "cache_size": -1024 * 64})
+db = SqliteDatabase(None)  # Initialize without a database file
 
 
 class BaseModel(Model):
@@ -144,4 +142,11 @@ class VehicleOld(BaseModel):
         primary_key = CompositeKey("identifier", "version")
 
 
-db.create_tables([Vehicle, VehicleOld], safe=True)
+def initialize_db(db_path: str):
+    db.init(db_path, pragmas={
+        "journal_mode": "wal",
+        "cache_size": -1024 * 64
+    })
+    db.connect()
+    db.create_tables([Vehicle, VehicleOld], safe=True)
+

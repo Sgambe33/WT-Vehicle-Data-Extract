@@ -2,44 +2,43 @@ import copy
 import re
 from math import floor
 from numbers import Number
-
-from classes.Aerodynamics import Aerodynamics
-from classes.Ammo import Ammo
-from classes.BallisticComputer import BallisticComputer
-from classes.CustomizablePreset import CustomizablePreset
-from classes.Engine import Engine
-from classes.Modification import Modification
-from classes.NightVisionDevice import NightVisionDevice
-from classes.Preset import Preset
-from classes.Pylon import Pylon
-from classes.Vehicle import Vehicle
-from classes.Weapon import Weapon
-from utils.constants import *
-from utils.custom_logging import *
-from utils.simple_functions import *
-from utils.update_localization import ALL_WEAPONS, ALL_AMMOS, ALL_EXPLOSIVES, ALL_AMMO_TYPES
+from src.wt_vehicle_extractor_sgambe33.classes.Aerodynamics import Aerodynamics
+from src.wt_vehicle_extractor_sgambe33.classes.Ammo import Ammo
+from src.wt_vehicle_extractor_sgambe33.classes.BallisticComputer import BallisticComputer
+from src.wt_vehicle_extractor_sgambe33.classes.CustomizablePreset import CustomizablePreset
+from src.wt_vehicle_extractor_sgambe33.classes.Engine import Engine
+from src.wt_vehicle_extractor_sgambe33.classes.Modification import Modification
+from src.wt_vehicle_extractor_sgambe33.classes.NightVisionDevice import NightVisionDevice
+from src.wt_vehicle_extractor_sgambe33.classes.Preset import Preset
+from src.wt_vehicle_extractor_sgambe33.classes.Pylon import Pylon
+from src.wt_vehicle_extractor_sgambe33.classes.Vehicle import Vehicle
+from src.wt_vehicle_extractor_sgambe33.classes.Weapon import Weapon
+from src.wt_vehicle_extractor_sgambe33.utils.constants import *
+from src.wt_vehicle_extractor_sgambe33.utils.custom_logging import *
+from src.wt_vehicle_extractor_sgambe33.utils.simple_functions import *
+from src.wt_vehicle_extractor_sgambe33.utils.update_localization import ALL_WEAPONS, ALL_AMMOS, ALL_EXPLOSIVES, ALL_AMMO_TYPES
 
 
 def get_vehicle_fetch_url(vehicle_name: str, unit_type_uri="/units/tankmodels"):
-    """Get epi endpoint of a specific vehicle
+    """Get URL endpoint of a specific vehicle
 
     Args:
         vehicle_name (str): Name of vehicle
-        unit_type_uri (str, optional): URI of the vehicle"s type. Defaults to "tankmodels".
+        unit_type_uri (str, optional): URI of the vehicle's type. Defaults to "/units/tankmodels".
 
     Returns:
-        str: api endpoint
+        str: URL endpoint
     """
     return f"{URL_VROMFS}gamedata{unit_type_uri}/{vehicle_name.lower()}.blkx"
 
 
 def get_guns_url(gun_path: str):
-    """Get epi endpoint of a specific gun
+    """Get URL endpoint of a specific gun
 
     Args:
-        gun_path (str): gun"s path found in Vehicle Data
+        gun_path (str): gun's path found in Vehicle Data
     Returns:
-        str: api endpoint
+        str: URL endpoint
     """
     return f"{URL_VROMFS}{gun_path.lower()}x"
 
@@ -48,8 +47,8 @@ def create_vehicle(v_name: str, v_fetch_path: str) -> Vehicle | None:
     """Create an Vehicle Object
 
     Args:
-        v_name (str): Vehicle"s name
-        v_fetch_path (str): Vehicle"s endpoint
+        v_name (str): Vehicle's name
+        v_fetch_path (str): Vehicle's endpoint
     Returns:
         dict: Vehicle Object
     """
@@ -58,44 +57,39 @@ def create_vehicle(v_name: str, v_fetch_path: str) -> Vehicle | None:
     data: Vehicle = create_vehicle_data(v_name, details, v_fetch_path, None)
     if data is None:
         return None
-
-    data.has_customizable_weapons = True if "WeaponSlots" in details.keys() else False
-    data.weapons = create_weapons(v_name, details, data.has_customizable_weapons)
-    data.presets = create_presets(details, data.has_customizable_weapons, len(data.weapons) > 0)
-    data.customizable_presets = create_customizable_presets(details, len(data.weapons) > 0) if data.has_customizable_weapons else None
     return data
 
 
 def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type: str | None) -> Vehicle | None:
-    """Create all vehicle"s data
+    """Create all vehicle's data
 
     Args:
-        v_name (str): vehicle"s name
-        v_details (dict): vehicle"s fetched details
-        v_fetch_path (_type_): vehicle"s fetch endpoint
+        v_name (str): vehicle's name
+        v_details (dict): vehicl's fetched details
+        v_fetch_path (_type_): vehicle's fetch endpoint
         vehicle_type (str | None): #! [UNUSED]
 
     Returns:
         dict: VehicleData Object
     """
     vehicle_wiki = value_from_dict(v_details, "wiki", value_from_dict(v_details, "Wiki"))
-    vehicle_data = value_from_dict(WPCOST, v_name)
+    vehicle_wpcost = value_from_dict(WPCOST, v_name)
     vehicle_tags = value_from_dict(value_from_dict(UNIT_TAGS, v_name), "Shop")
     vehicle_phys = value_from_dict(v_details, "VehiclePhys", value_from_dict(v_details, "ShipPhys"))
 
-    if v_name not in WPCOST or (vehicle_type is not None and value_from_dict(vehicle_data, "unitMoveType") != vehicle_type):
+    if v_name not in WPCOST or (vehicle_type is not None and value_from_dict(vehicle_wpcost, "unitMoveType") != vehicle_type):
         cLogger.error(
-            f'{v_name=} is not in WPCOST {vehicle_type=} WPCOST_TYPE={value_from_dict(vehicle_data, "unitMoveType")}')
+            f'{v_name=} is not in WPCOST {vehicle_type=} WPCOST_TYPE={value_from_dict(vehicle_wpcost, "unitMoveType")}')
         return None
 
     vehicle: Vehicle = Vehicle()
-    country = value_from_dict(vehicle_data, "country")
+    country: str = value_from_dict(vehicle_wpcost, "country")
     country = country.replace("country_", "").lower() if country is not None else country
     vehicle.country = country
     vehicle.identifier = v_name
 
     tags: dict = value_from_dict(value_from_dict(UNIT_TAGS, v_name), "tags")
-    types = [x.replace("type_", "").lower() for x in tags.keys() if (x != "boat" or x != "ship") and x.startswith("type_")]
+    types: list[str] = [type_entry.replace("type_", "").lower() for type_entry in tags.keys() if (type_entry != "boat" or type_entry != "ship") and type_entry.startswith("type_")]
     for vehicle_type in types:
         if vehicle_type in SEA_TYPES2:
             vehicle.vehicle_type = vehicle_type
@@ -106,80 +100,90 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
         elif vehicle_type in GROUND_TYPES2:
             vehicle.vehicle_type = vehicle_type
             break
-    types = [t for t in types if t not in [vehicle.vehicle_type]]
-    vehicle.vehicle_sub_types = types
+    vehicle.vehicle_sub_types = types.remove(vehicle.vehicle_type)
 
-    vehicle.event = value_from_dict(vehicle_data, "event", None)
-    vehicle.release_date = value_from_dict(value_from_dict(UNIT_TAGS, v_name), "releaseDate", None)
-    if vehicle.release_date is not None: vehicle.release_date = vehicle.release_date.replace(" 00:00:00", "")
-    vehicle.version = getVersion()
+    vehicle.event = value_from_dict(vehicle_wpcost, "event")
+    vehicle.release_date = value_from_dict(value_from_dict(UNIT_TAGS, v_name), "releaseDate")
+    if vehicle.release_date is not None:
+        vehicle.release_date = vehicle.release_date.replace(" 00:00:00", "")
+    vehicle.version = get_game_version()
 
-    vehicle.era = value_from_dict(vehicle_data, "rank")
-    vehicle.arcade_br = BATTLE_RATINGS[value_from_dict(vehicle_data, "economiceraArcade", value_from_dict(vehicle_data, "economicRankArcade", 1.0))]
-    vehicle.realistic_br = BATTLE_RATINGS[value_from_dict(vehicle_data, "economiceraHistorical", value_from_dict(vehicle_data, "economicRankHistorical", 1.0))]
-    vehicle.simulator_br = BATTLE_RATINGS[value_from_dict(vehicle_data, "economiceraSimulation", value_from_dict(vehicle_data, "economicRankSimulation", 1.0))]
-    economic_rank_tank_historical = value_from_dict(vehicle_data, "economicRankTankHistorical")
-    vehicle.realistic_ground_br = BATTLE_RATINGS[economic_rank_tank_historical] if economic_rank_tank_historical is not None else vehicle.realistic_br
-    economic_rank_simulation = value_from_dict(vehicle_data, "economiceraSimulation", value_from_dict(vehicle_data, "economicRankSimulation", 1.0))
-    vehicle.simulator_ground_br = BATTLE_RATINGS[economic_rank_simulation] if economic_rank_simulation is not None else vehicle.simulator_br
+    vehicle.era = value_from_dict(vehicle_wpcost, "rank", 0)
+    arcade_rank: int = value_from_dict(vehicle_wpcost, "economiceraArcade", value_from_dict(vehicle_wpcost, "economicRankArcade", 1))
+    realistic_rank: int = value_from_dict(vehicle_wpcost, "economiceraHistorical", value_from_dict(vehicle_wpcost, "economicRankHistorical", 1))
+    simulator_rank: int = value_from_dict(vehicle_wpcost, "economiceraSimulation", value_from_dict(vehicle_wpcost, "economicRankSimulation", 1))
+    ground_rank_realistic: int = value_from_dict(vehicle_wpcost, "economicRankTankHistorical", realistic_rank)
 
-    vehicle.value = value_from_dict(vehicle_data, "value", 0)
-    vehicle.req_exp = value_from_dict(vehicle_data, "reqExp", 0)
-    vehicle.is_premium = True if value_from_dict(vehicle_data, "costGold") is not None else False
+    vehicle.arcade_br = BATTLE_RATINGS[arcade_rank]
+    vehicle.realistic_br = BATTLE_RATINGS[realistic_rank]
+    vehicle.simulator_br = BATTLE_RATINGS[simulator_rank]
+    vehicle.realistic_ground_br = BATTLE_RATINGS[ground_rank_realistic]
+    vehicle.simulator_ground_br = BATTLE_RATINGS[simulator_rank]
 
+    vehicle.value = value_from_dict(vehicle_wpcost, "value", 0)
+    vehicle.req_exp = value_from_dict(vehicle_wpcost, "reqExp", 0)
+    vehicle.ge_cost = value_from_dict(vehicle_wpcost, "costGold", 0)
+
+    vehicle.is_premium = True if vehicle.ge_cost > 0 else False
     vehicle.squadron_vehicle = is_squadron_vehicle(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
     vehicle.on_marketplace = is_vehicle_on_marketplace(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
     vehicle.is_pack = False if (vehicle.on_marketplace or vehicle.squadron_vehicle or not vehicle.is_premium) else is_pack(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
-    vehicle.ge_cost = value_from_dict(vehicle_data, "costGold", 0)
-    vehicle.crew_total_count = value_from_dict(vehicle_data, "crewTotalCount", 0)
+
+    vehicle.crew_total_count = value_from_dict(vehicle_wpcost, "crewTotalCount", 0)
     vehicle.hull_armor = get_armor_thickness(v_details, vehicle_tags, "hull")
     vehicle.turret_armor = get_armor_thickness(v_details, vehicle_tags, "turret")
 
     vehicle_phys_mass = value_from_dict(vehicle_phys, "Mass", value_from_dict(vehicle_phys, "mass"))
-    empty_mass = value_from_dict(vehicle_phys_mass, "Empty", 0.0)
-    fuel_mass = value_from_dict(vehicle_phys_mass, "Fuel", 0.0)
+    empty_mass: float = value_from_dict(vehicle_phys_mass, "Empty", 0.0)
+    fuel_mass: float = value_from_dict(vehicle_phys_mass, "Fuel", 0.0)
     vehicle_wiki_general = value_from_dict(vehicle_wiki, "general", value_from_dict(vehicle_wiki, "General"))
-    normal_weight = value_from_dict(vehicle_wiki_general, "normalWeight", 0.0)
+    normal_weight: float = value_from_dict(vehicle_wiki_general, "normalWeight", 0.0)
     vehicle.mass = empty_mass + fuel_mass + normal_weight
 
-    vehicle.train1_cost = value_from_dict(vehicle_data, "trainCost", 0)
-    vehicle.train2_cost = value_from_dict(vehicle_data, "train2Cost", 0)
-    vehicle.train3_cost_gold = value_from_dict(vehicle_data, "train3Cost_gold", 0)
-    vehicle.train3_cost_exp = value_from_dict(vehicle_data, "train3Cost_exp", 0)
-    vehicle.sl_mul_arcade = value_from_dict(vehicle_data, "rewardMulArcade", 0.0)
-    vehicle.sl_mul_realistic = value_from_dict(vehicle_data, "rewardMulHistorical", 0.0)
-    vehicle.sl_mul_simulator = value_from_dict(vehicle_data, "rewardMulSimulation", 0.0)
-    vehicle.exp_mul = value_from_dict(vehicle_data, "expMul", 0.0)
-    vehicle.repair_time_arcade = value_from_dict(vehicle_data, "repairTimeHrsArcade", 0)
-    vehicle.repair_time_realistic = value_from_dict(vehicle_data, "repairTimeHrsHistorical", 0)
-    vehicle.repair_time_simulator = value_from_dict(vehicle_data, "repairTimeHrsSimulation", 0)
-    vehicle.repair_time_no_crew_arcade = value_from_dict(vehicle_data, "repairTimeHrsNoCrewArcade", 0)
-    vehicle.repair_time_no_crew_realistic = value_from_dict(vehicle_data, "repairTimeHrsNoCrewHistorical", 0)
-    vehicle.repair_time_no_crew_simulator = value_from_dict(vehicle_data, "repairTimeHrsNoCrewSimulation", 0)
-    vehicle.repair_cost_arcade = value_from_dict(vehicle_data, "repairCostArcade", 0)
-    vehicle.repair_cost_realistic = value_from_dict(vehicle_data, "repairCostHistorical", 0)
-    vehicle.repair_cost_simulator = value_from_dict(vehicle_data, "repairCostSimulation", 0)
-    vehicle.repair_cost_per_min_arcade = value_from_dict(vehicle_data, "repairCostPerMinArcade", 0)
-    vehicle.repair_cost_per_min_realistic = value_from_dict(vehicle_data, "repairCostPerMinHistorical", 0)
-    vehicle.repair_cost_per_min_simulator = value_from_dict(vehicle_data, "repairCostPerMinSimulation", 0)
-    vehicle.repair_cost_full_upgraded_arcade = value_from_dict(vehicle_data, "repairCostFullUpgradedArcade", 0)
-    vehicle.repair_cost_full_upgraded_realistic = value_from_dict(vehicle_data, "repairCostFullUpgradedHistorical", 0)
-    vehicle.repair_cost_full_upgraded_simulator = value_from_dict(vehicle_data, "repairCostFullUpgradedSimulation", 0)
-    vehicle.required_vehicle = value_from_dict(vehicle_data, "reqAir", None)
+    vehicle.train1_cost = value_from_dict(vehicle_wpcost, "trainCost", 0)
+    vehicle.train2_cost = value_from_dict(vehicle_wpcost, "train2Cost", 0)
+    vehicle.train3_cost_gold = value_from_dict(vehicle_wpcost, "train3Cost_gold", 0)
+    vehicle.train3_cost_exp = value_from_dict(vehicle_wpcost, "train3Cost_exp", 0)
+    vehicle.sl_mul_arcade = value_from_dict(vehicle_wpcost, "rewardMulArcade", 0.0)
+    vehicle.sl_mul_realistic = value_from_dict(vehicle_wpcost, "rewardMulHistorical", 0.0)
+    vehicle.sl_mul_simulator = value_from_dict(vehicle_wpcost, "rewardMulSimulation", 0.0)
+    vehicle.exp_mul = value_from_dict(vehicle_wpcost, "expMul", 0.0)
+    vehicle.repair_time_arcade = value_from_dict(vehicle_wpcost, "repairTimeHrsArcade", 0)
+    vehicle.repair_time_realistic = value_from_dict(vehicle_wpcost, "repairTimeHrsHistorical", 0)
+    vehicle.repair_time_simulator = value_from_dict(vehicle_wpcost, "repairTimeHrsSimulation", 0)
+    vehicle.repair_time_no_crew_arcade = value_from_dict(vehicle_wpcost, "repairTimeHrsNoCrewArcade", 0)
+    vehicle.repair_time_no_crew_realistic = value_from_dict(vehicle_wpcost, "repairTimeHrsNoCrewHistorical", 0)
+    vehicle.repair_time_no_crew_simulator = value_from_dict(vehicle_wpcost, "repairTimeHrsNoCrewSimulation", 0)
+    vehicle.repair_cost_arcade = value_from_dict(vehicle_wpcost, "repairCostArcade", 0)
+    vehicle.repair_cost_realistic = value_from_dict(vehicle_wpcost, "repairCostHistorical", 0)
+    vehicle.repair_cost_simulator = value_from_dict(vehicle_wpcost, "repairCostSimulation", 0)
+    vehicle.repair_cost_per_min_arcade = value_from_dict(vehicle_wpcost, "repairCostPerMinArcade", 0)
+    vehicle.repair_cost_per_min_realistic = value_from_dict(vehicle_wpcost, "repairCostPerMinHistorical", 0)
+    vehicle.repair_cost_per_min_simulator = value_from_dict(vehicle_wpcost, "repairCostPerMinSimulation", 0)
+    vehicle.repair_cost_full_upgraded_arcade = value_from_dict(vehicle_wpcost, "repairCostFullUpgradedArcade", 0)
+    vehicle.repair_cost_full_upgraded_realistic = value_from_dict(vehicle_wpcost, "repairCostFullUpgradedHistorical", 0)
+    vehicle.repair_cost_full_upgraded_simulator = value_from_dict(vehicle_wpcost, "repairCostFullUpgradedSimulation", 0)
+    vehicle.required_vehicle = value_from_dict(vehicle_wpcost, "reqAir")
 
-    vehicle.engine = create_vehicle_data_engine(v_fetch_path, vehicle_phys, vehicle_tags)
     vehicle.aerodynamics = create_vehicle_data_aerodynamics(vehicle_wiki, vehicle_tags) if vehicle.vehicle_type in AIR_TYPES else None
-    vehicle.modifications = create_vehicle_data_modifications(vehicle_data)
-    night_vision_devices = create_vehicle_night_vision(v_details, vehicle.vehicle_type)
-    vehicle.ir_devices = night_vision_devices[0]
-    vehicle.thermal_devices = night_vision_devices[1]
     vehicle.ballistic_computer = create_vehicle_ballistic_computer(v_details, vehicle.vehicle_type)
+    vehicle.engine = create_vehicle_data_engine(v_fetch_path, vehicle_phys, vehicle_tags)
+    vehicle.ir_devices, vehicle.thermal_devices = create_vehicle_night_vision(v_details, vehicle.vehicle_type)
+    vehicle.modifications = create_vehicle_data_modifications(vehicle_wpcost)
+
+    vehicle.has_customizable_weapons = True if "WeaponSlots" in v_details.keys() else False
+    vehicle.weapons = create_weapons(v_name, v_details, vehicle.has_customizable_weapons)
+    vehicle.presets = create_presets(v_details, vehicle.has_customizable_weapons, len(vehicle.weapons) > 0)
+    vehicle.customizable_presets = create_customizable_presets(v_details, len(vehicle.weapons) > 0) if vehicle.has_customizable_weapons else None
+
     return vehicle
 
 
 def get_armor_thickness(v_details: dict, vehicle_tags: dict, part: str) -> list[int]:
-    """Get vehicle"s armor thickness
-
+    """Get vehicle's armor thickness. This function tries 2 times to fetch the armor:
+    1. By looking at the vehicle's tags
+    2. By looking at the vehicle's damage parts
+    If both fail, it returns [0, 0, 0]
     Args:
         v_details (dict): vehicle"s fetched details
         vehicle_tags (_type_): vehicle"s fetched unittags
@@ -189,29 +193,28 @@ def get_armor_thickness(v_details: dict, vehicle_tags: dict, part: str) -> list[
         list[int]: list of armor thicknesses [front, side, back]
     """
     armor = [0, 0, 0]
-    # Method 1: look for armor thickness in the vehicle tags
     if part == "hull":
         armor = value_from_dict(vehicle_tags, "armorThicknessHull", [0, 0, 0])
     elif part == "turret":
         armor = value_from_dict(vehicle_tags, "armorThicknessTurret", [0, 0, 0])
+
     if armor != [0, 0, 0]: return armor
 
-    # Method 2: fallback if method 1 fails
     damage_parts = value_from_dict(v_details, "DamageParts")
     if damage_parts is None: return armor
     damage_part = value_from_dict(damage_parts, part)
     if damage_part is None: return armor
     if part == "hull":
         armor = [
-            value_from_dict(value_from_dict(damage_part, "body_front_dm"), "armorThickness", 0),
-            value_from_dict(value_from_dict(damage_part, "body_side_dm"), "armorThickness", 0),
-            value_from_dict(value_from_dict(damage_part, "body_back_dm"), "armorThickness", 0)
+            int(value_from_dict(value_from_dict(damage_part, "body_front_dm"), "armorThickness", 0)),
+            int(value_from_dict(value_from_dict(damage_part, "body_side_dm"), "armorThickness", 0)),
+            int(value_from_dict(value_from_dict(damage_part, "body_back_dm"), "armorThickness", 0))
         ]
     elif part == "turret":
         armor = [
-            value_from_dict(value_from_dict(damage_part, "turret_front_dm"), "armorThickness", 0),
-            value_from_dict(value_from_dict(damage_part, "turret_side_dm"), "armorThickness", 0),
-            value_from_dict(value_from_dict(damage_part, "turret_back_dm"), "armorThickness", 0)
+            int(value_from_dict(value_from_dict(damage_part, "turret_front_dm"), "armorThickness", 0)),
+            int(value_from_dict(value_from_dict(damage_part, "turret_side_dm"), "armorThickness", 0)),
+            int(value_from_dict(value_from_dict(damage_part, "turret_back_dm"), "armorThickness", 0))
         ]
     return armor
 
@@ -230,15 +233,15 @@ def create_vehicle_data_engine(v_fetch_path: str, vehicle_phys: dict, vehicle_ta
 
     if "ships" in v_fetch_path:
         engine = value_from_dict(vehicle_phys, "engines")
-        max_speed = value_from_dict(engine, "maxSpeed", 0)
-        max_rev_speed = value_from_dict(engine, "maxRevSpeed", value_from_dict(engine, "maxReverseSpeed", 0))
-        final_engine.max_speed_rb_sb = floor(max_speed * 3.6 if type(max_speed) is float else max_speed[0] * 3.6)
-        final_engine.max_reverse_speed_rb_sb = floor(max_rev_speed * 3.6 if isinstance(max_rev_speed, Number) else max_rev_speed[0] * 3.6)
+        max_speed = value_from_dict(engine, "maxSpeed", 0.0)
+        max_rev_speed = value_from_dict(engine, "maxRevSpeed", value_from_dict(engine, "maxReverseSpeed", 0.0))
+        final_engine.max_speed_rb_sb = int(floor(max_speed * 3.6 if type(max_speed) is float else max_speed[0] * 3.6))
+        final_engine.max_reverse_speed_rb_sb = int(floor(max_rev_speed * 3.6 if isinstance(max_rev_speed, Number) else max_rev_speed[0] * 3.6))
         final_engine.max_speed_ab = proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_SHIP)
         final_engine.max_reverse_speed_ab = proper_round(final_engine.max_reverse_speed_rb_sb * ENGINE_SPEED_AB_MUL_SHIP)
 
     elif "flightmodels" in v_fetch_path:
-        final_engine.max_speed_rb_sb = floor(value_from_dict(vehicle_tags, "maxSpeed", 0) * 3.6)
+        final_engine.max_speed_rb_sb = int(floor(value_from_dict(vehicle_tags, "maxSpeed", 0) * 3.6))
         final_engine.max_speed_ab = proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_AIR)
 
     elif "tankmodels" in v_fetch_path:
@@ -248,21 +251,21 @@ def create_vehicle_data_engine(v_fetch_path: str, vehicle_phys: dict, vehicle_ta
         main_gear_ratio = value_from_dict(mechanics, "mainGearRatio", 0)
         side_gear_ratio = value_from_dict(mechanics, "sideGearRatio", 0)
         gears = value_from_dict(value_from_dict(mechanics, "gearRatios"), "ratio")
-        final_engine.max_rpm = value_from_dict(engine, "maxRPM", 0)
-        final_engine.min_rpm = value_from_dict(engine, "minRPM", 0)
+        final_engine.max_rpm = int(value_from_dict(engine, "maxRPM", 0))
+        final_engine.min_rpm = int(value_from_dict(engine, "minRPM", 0))
         final_engine.horse_power_rb_sb = int(value_from_dict(engine, "horsePowers", 0))
         final_engine.horse_power_ab = proper_round(final_engine.horse_power_rb_sb * ENGINE_HP_AB_MUL_TANK)
 
         try:
-            final_engine.max_speed_rb_sb = floor(((final_engine.max_rpm * drive_gear_radius) / (main_gear_ratio * side_gear_ratio * gears[-1])) * 0.12 * 3.14)
-            final_engine.max_reverse_speed_rb_sb = floor(((final_engine.max_rpm * drive_gear_radius) / (main_gear_ratio * side_gear_ratio * gears[0])) * 0.12 * 3.14)
+            final_engine.max_speed_rb_sb = int(floor(((final_engine.max_rpm * drive_gear_radius) / (main_gear_ratio * side_gear_ratio * gears[-1])) * 0.12 * 3.14))
+            final_engine.max_reverse_speed_rb_sb = int(floor(((final_engine.max_rpm * drive_gear_radius) / (main_gear_ratio * side_gear_ratio * gears[0])) * 0.12 * 3.14))
         except Exception:
             cLogger.error(f"Error while creating engine for {v_fetch_path}")
             final_engine.max_speed_rb_sb = 0
             final_engine.max_reverse_speed_rb_sb = 0
 
-        final_engine.max_speed_ab = int(proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_TANK))
-        final_engine.max_reverse_speed_ab = int(proper_round(final_engine.max_reverse_speed_rb_sb * ENGINE_SPEED_AB_MUL_TANK))
+        final_engine.max_speed_ab = proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_TANK)
+        final_engine.max_reverse_speed_ab = proper_round(final_engine.max_reverse_speed_rb_sb * ENGINE_SPEED_AB_MUL_TANK)
     return final_engine
 
 
@@ -279,12 +282,12 @@ def create_vehicle_data_aerodynamics(vehicle_wiki: dict, vehicle_tags: dict) -> 
     aerodynamics.length = value_from_dict(wiki, "length", 0)
     aerodynamics.wingspan = value_from_dict(wiki, "wingspan", 0)
     aerodynamics.wing_area = value_from_dict(wiki, "wingArea", 0)
-    aerodynamics.empty_weight = value_from_dict(wiki, "emptyWeight", 0)
-    aerodynamics.max_takeoff_weight = value_from_dict(wiki, "maxTakeoffWeight", 0)
-    aerodynamics.max_altitude = value_from_dict(vehicle_tags, "maxAltitude", 0)
-    aerodynamics.turn_time = value_from_dict(vehicle_tags, "turnTime", 0)
-    aerodynamics.runway_length_required = value_from_dict(vehicle_tags, "airfieldLen", 0)
-    aerodynamics.max_speed_at_altitude = value_from_dict(vehicle_tags, "maxSpeedAlt", 0)
+    aerodynamics.empty_weight = int(value_from_dict(wiki, "emptyWeight", 0))
+    aerodynamics.max_takeoff_weight = int(value_from_dict(wiki, "maxTakeoffWeight", 0))
+    aerodynamics.max_altitude = int(value_from_dict(vehicle_tags, "maxAltitude", 0))
+    aerodynamics.turn_time = int(value_from_dict(vehicle_tags, "turnTime", 0))
+    aerodynamics.runway_length_required = int(value_from_dict(vehicle_tags, "airfieldLen", 0))
+    aerodynamics.max_speed_at_altitude = int(value_from_dict(vehicle_tags, "maxSpeedAlt", 0))
 
     return aerodynamics
 
@@ -431,7 +434,7 @@ def create_weapons(v_name: str, v_details: dict, customizable: bool = False):
                 if isinstance(value_from_dict(gun, "Weapon"), list):
                     for gun_part in value_from_dict(gun, "Weapon"):
                         if "dummy" not in gun_part["blk"]:
-                            preset.weapons.append(create_weapon_details(gun_part["blk"]))
+                            preset.weapons.add(create_weapon_details(gun_part["blk"]))
 
                 # TODO: This is a temporary fix, figure out an elegant solution
                 final_presets.add(copy.deepcopy(preset))
@@ -444,7 +447,7 @@ def create_weapons(v_name: str, v_details: dict, customizable: bool = False):
             if isinstance(value_from_dict(default_weapons, "WeaponPreset", [])["Weapon"], list):
                 for gun in value_from_dict(default_weapons, "WeaponPreset", [])["Weapon"]:
                     if "dummy" not in gun["blk"]:
-                        preset.weapons.append(create_weapon_details(gun["blk"]))
+                        preset.weapons.add(create_weapon_details(gun["blk"]))
 
             preset.weapons = group_and_increment(preset.weapons, "name")
             final_presets.add(copy.deepcopy(preset))
@@ -472,12 +475,12 @@ def create_weapons(v_name: str, v_details: dict, customizable: bool = False):
 
 
 # TODO: Is count really necessary here? Perhaps yes, see customizable presets creation
-def create_weapon_details(weapon_path: str, count: int = 1):
+def create_weapon_details(weapon_path: str, count: int = 1, icon: str = None) -> Weapon:
     """Create Weapon Object
 
-    Args:
-        count:
-        weapon_path (str): Weapon"s weapon_path
+        :param weapon_path: The path of the weapon (blkx file)
+        :param count: The amount of weapons (unused)
+        :param icon: The icon of the weapon
     Returns:
         Weapon Object
     """
@@ -507,6 +510,8 @@ def create_weapon_details(weapon_path: str, count: int = 1):
 
     all_weapons_keys = dictKeysToList(weapon_blkx)
     if is_cannon:
+        icon = value_from_dict(weapon_blkx, "iconType")
+        icon = icon[0] if type(icon) is list else icon
         final_ammos = get_ammos_by_weapon("bullet", weapon_blkx, all_weapons_keys)
     elif is_rocket:
         final_ammos = get_ammos_by_weapon("rocket", weapon_blkx, all_weapons_keys)
@@ -517,7 +522,7 @@ def create_weapon_details(weapon_path: str, count: int = 1):
     elif is_booster:
         final_ammos = get_ammos_by_weapon("payload", weapon_blkx, all_weapons_keys)
     elif is_container:
-        return create_weapon_details(weapon_blkx["blk"], weapon_blkx["bullets"])
+        return create_weapon_details(weapon_blkx["blk"], weapon_blkx["bullets"], icon)
 
     elif is_extfueltank:
         final_ammos = get_ammos_by_weapon("payload", weapon_blkx, all_weapons_keys)
@@ -526,6 +531,7 @@ def create_weapon_details(weapon_path: str, count: int = 1):
     weapon.name = name_regex[0]
     weapon.weapon_type = CANNON_NAME if is_cannon else ROCKET_NAME if is_rocket else TORPEDO_NAME if is_torpedo else BOMB_NAME if is_bomb else BOOSTER_NAME if is_booster else CONTAINER_NAME
     weapon.count = count
+    weapon.icon = icon
 
     weapon.ammos = final_ammos
     ALL_WEAPONS.add(weapon.name)
@@ -533,7 +539,7 @@ def create_weapon_details(weapon_path: str, count: int = 1):
     return weapon
 
 
-def get_ammos_by_weapon(weapon_type: str, all_weapons: dict[any], all_weapons_keys=[]):
+def get_ammos_by_weapon(weapon_type: str, all_weapons: dict, all_weapons_keys=[]):
     final_ammos: set[Ammo] = set()
     for key in all_weapons_keys:
         raw_ammo = None
@@ -562,20 +568,18 @@ def create_ammo(raw_ammo: dict):
     explosive_mass = value_from_dict(raw_ammo, "explosiveMass")
 
     name = value_from_dict(raw_ammo, "bombName", value_from_dict(raw_ammo, "bulletName"))
-    _type = value_from_dict(raw_ammo, "bombType", value_from_dict(raw_ammo, "bulletType"))
+    ammo_type = value_from_dict(raw_ammo, "bombType", value_from_dict(raw_ammo, "bulletType"))
     mass = value_from_dict(raw_ammo, "mass")
     mass = mass[0] if type(mass) is list else mass
     # ship else generic
-    speed = value_from_dict(raw_ammo, "maxSpeedInWater",
-                            value_from_dict(raw_ammo, "speed", value_from_dict(raw_ammo, "maxSpeed")))
+    speed = value_from_dict(raw_ammo, "maxSpeedInWater", value_from_dict(raw_ammo, "speed", value_from_dict(raw_ammo, "maxSpeed")))
     caliber = value_from_dict(raw_ammo, "caliber")
     # ship else generic
     max_distance = value_from_dict(raw_ammo, "distToLive", value_from_dict(raw_ammo, "maxDistance"))
 
     out: Ammo = Ammo()
     out.name = name
-    # If type is a list, get the first element
-    out.type = _type[0] if type(_type) is list else _type
+    out.type = ammo_type[0] if type(ammo_type) is list else ammo_type
     out.caliber = caliber
     out.mass = mass
     out.speed = speed
@@ -624,21 +628,21 @@ def create_presets(v_details: dict, customizable: bool, has_offensive_weapons: b
                     if type(pylon_guns["Weapon"]) is list:
                         for weapon in pylon_guns["Weapon"]:
                             if "dummy" not in value_from_dict(weapon, "blk", []):
-                                final_preset.weapons.append(create_weapon_details(weapon["blk"]))
+                                final_preset.weapons.add(create_weapon_details(weapon["blk"]))
                     else:
                         if "dummy" not in value_from_dict(pylon_guns["Weapon"], "blk", []):
-                            final_preset.weapons.append(create_weapon_details(pylon_guns["Weapon"]["blk"]))
+                            final_preset.weapons.add(create_weapon_details(pylon_guns["Weapon"]["blk"]))
                 elif isinstance(pylon_guns, list):
                     for weapon in pylon_guns:
                         # Check if the weapon name is the same as the preset name
                         if weapon["name"] == weapon_of_preset["preset"]:
                             if isinstance(weapon["Weapon"], dict) and ("dummy" not in value_from_dict(weapon["Weapon"], "blk")):
-                                final_preset.weapons.append(create_weapon_details(weapon["Weapon"]["blk"]))
+                                final_preset.weapons.add(create_weapon_details(weapon["Weapon"]["blk"]))
                             # TODO: Find an example for this?
                             elif isinstance(weapon["Weapon"], list):
                                 for w in weapon["Weapon"]:
                                     if "dummy" not in value_from_dict(w, "blk", []):
-                                        final_preset.weapons.append(create_weapon_details(w["blk"]))
+                                        final_preset.weapons.add(create_weapon_details(w["blk"]))
                 else:
                     cLogger.warning("Error while creating: " + preset["name"])
                     pass
@@ -660,11 +664,11 @@ def create_presets(v_details: dict, customizable: bool, has_offensive_weapons: b
                 # ! Do not touch this
                 if type(weapons) is not list:
                     if "dummy" not in value_from_dict(preset["Weapon"], "blk", []):
-                        final_preset.weapons.append(create_weapon_details(value_from_dict(preset["Weapon"], "blk")))
+                        final_preset.weapons.add(create_weapon_details(value_from_dict(preset["Weapon"], "blk")))
                 else:
                     for weapon in weapons:
                         if "dummy" not in value_from_dict(preset["Weapon"], "blk", []):
-                            final_preset.weapons.append(create_weapon_details(value_from_dict(weapon, "blk")))
+                            final_preset.weapons.add(create_weapon_details(value_from_dict(weapon, "blk")))
 
                 final_preset.weapons = group_and_increment(final_preset.weapons, "name")
                 # TODO: This is a temporary fix, figure out an elegant solution.
@@ -677,10 +681,10 @@ def create_customizable_presets(v_details: dict, has_offensive_weapons: bool) ->
     weapon_slots = value_from_dict(v_details, "WeaponSlots")
 
     customizable_preset = CustomizablePreset()
-    customizable_preset.max_load = value_from_dict(weapon_slots, "maxloadMass", 0)
-    customizable_preset.max_load_left_wing = value_from_dict(weapon_slots, "maxloadMassLeftConsoles", 0)
-    customizable_preset.max_load_right_wing = value_from_dict(weapon_slots, "maxloadMassRightConsoles", 0)
-    customizable_preset.max_disbalance = value_from_dict(weapon_slots, "maxDisbalance", 0)
+    customizable_preset.max_load = int(value_from_dict(weapon_slots, "maxloadMass", 0))
+    customizable_preset.max_load_left_wing = int(value_from_dict(weapon_slots, "maxloadMassLeftConsoles", 0))
+    customizable_preset.max_load_right_wing = int(value_from_dict(weapon_slots, "maxloadMassRightConsoles", 0))
+    customizable_preset.max_disbalance = int(value_from_dict(weapon_slots, "maxDisbalance", 0))
 
     weapon_slot: list = value_from_dict(weapon_slots, "WeaponSlot")
 
@@ -699,7 +703,7 @@ def create_customizable_presets(v_details: dict, has_offensive_weapons: bool) ->
         for weapon_object in available_weapons:
             # Get all the guns from a specific pylon
             weapons = value_from_dict(weapon_object, "Weapon")
-
+            weapons_icon = value_from_dict(weapon_object, "iconType")
             if isinstance(weapons, dict):
                 weapons = [weapons]
 
@@ -707,7 +711,7 @@ def create_customizable_presets(v_details: dict, has_offensive_weapons: bool) ->
                 for weapon in weapons:
                     # TODO: Perhaps set count to number of ammos? (see bullets)
                     if "dummy_weapon" not in weapon["blk"]:
-                        pylon.selectable_weapons.append(create_weapon_details(weapon["blk"]))
+                        pylon.selectable_weapons.add(create_weapon_details(weapon["blk"], 1, weapons_icon))
 
         pylon.selectable_weapons = group_and_increment(pylon.selectable_weapons, "name")
         customizable_preset.pylons.append(copy.deepcopy(pylon))
@@ -716,7 +720,7 @@ def create_customizable_presets(v_details: dict, has_offensive_weapons: bool) ->
     return customizable_preset
 
 
-def group_and_increment(set_of_items, property_name):
+def group_and_increment(set_of_items, property_name) -> set:
     item_dict = {}
     for item in set_of_items:
         property_value = getattr(item, property_name)
@@ -724,4 +728,4 @@ def group_and_increment(set_of_items, property_name):
             item_dict[property_value] = item
         else:
             item_dict[property_value].count += item.count
-    return list(item_dict.values())
+    return set(item_dict.values())

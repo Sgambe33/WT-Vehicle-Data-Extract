@@ -4,8 +4,8 @@ import os
 from tqdm import tqdm
 import pandas as pd
 from dotenv import load_dotenv
-from db.models import Vehicle
-from utils import cLogger
+from src.wt_vehicle_extractor_sgambe33.db.models import Vehicle
+from src.wt_vehicle_extractor_sgambe33.utils import cLogger
 
 load_dotenv()
 

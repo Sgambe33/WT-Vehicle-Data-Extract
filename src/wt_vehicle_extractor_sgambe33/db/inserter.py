@@ -3,7 +3,7 @@ from deepdiff import DeepDiff
 from peewee import DoesNotExist, chunked
 from playhouse.shortcuts import model_to_dict
 from tqdm import tqdm
-from utils import cLogger, COUNTRIES
+from src.wt_vehicle_extractor_sgambe33.utils import cLogger, COUNTRIES
 from .models import db, Vehicle, VehicleOld
 
 
@@ -35,8 +35,8 @@ def update_db():
                                     # Save the new vehicle in Vehicle table
                                     vehicle_data["version"] = current_version
                                     new_vehicles.append(vehicle_data)
-                                else:
                                     cLogger.info(f'{vehicle_data["identifier"]} version updated: {db_version} --> {current_version}')
+                                else:
                                     for key, value in vehicle_data.items():
                                         setattr(db_vehicle, key, value)
                                     db_vehicle.version = current_version

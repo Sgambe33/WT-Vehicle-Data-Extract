@@ -4,27 +4,24 @@ import json
 import shutil
 from tqdm import tqdm
 from dotenv import load_dotenv
-from utils import cLogger
-from utils.simple_functions import value_from_dict
-from utils.constants import MODIFICATIONS, COUNTRIES, AIR_CLASSES, GROUND_CLASSES, SEA_CLASSES
+from src.wt_vehicle_extractor_sgambe33.utils import cLogger
+from src.wt_vehicle_extractor_sgambe33.utils.simple_functions import value_from_dict
+from src.wt_vehicle_extractor_sgambe33.utils.constants import MODIFICATIONS, COUNTRIES, AIR_CLASSES, GROUND_CLASSES, SEA_CLASSES, WPCOST
 
 load_dotenv()
 
 
 def update_dataset():
     """
-    Update the dataset by processing the `wpcost.blkx` file.
+    Update the dataset by processing the `WPCOST.blkx` file.
 
-    This function reads the `wpcost.blkx` file and then iterates
+    This function reads the `WPCOST.blkx` file and then iterates
     over the countries to create JSON files for air, ground, and sea units.
 
     Returns:
         None
     """
-    with open(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/wpcost.blkx", 'r', encoding="UTF-8") as f:
-        wpcost = json.load(f)
-
-    del wpcost["economicRankMax"]
+    del WPCOST["economicRankMax"]
 
     for nation in tqdm(COUNTRIES):
         air_list = []
@@ -39,14 +36,14 @@ def update_dataset():
         ground_path = os.path.abspath("./generatedAssets/nations/" + nation + "/country_" + nation + "_ground.json")
         sea_path = os.path.abspath("./generatedAssets/nations/" + nation + "/country_" + nation + "_sea.json")
 
-        for i in wpcost:
-
-            if wpcost[i]["unitClass"] in AIR_CLASSES and wpcost[i]["country"] == "country_" + nation:
-                air_list.append(i)
-            elif wpcost[i]["unitClass"] in GROUND_CLASSES and wpcost[i]["country"] == "country_" + nation:
-                ground_list.append(i)
-            elif wpcost[i]["unitClass"] in SEA_CLASSES and wpcost[i]["country"] == "country_" + nation:
-                sea_list.append(i)
+        for i in WPCOST:
+            if "killstreak" not in i:
+                if WPCOST[i]["unitClass"] in AIR_CLASSES and WPCOST[i]["country"] == "country_" + nation:
+                    air_list.append(i)
+                elif WPCOST[i]["unitClass"] in GROUND_CLASSES and WPCOST[i]["country"] == "country_" + nation:
+                    ground_list.append(i)
+                elif WPCOST[i]["unitClass"] in SEA_CLASSES and WPCOST[i]["country"] == "country_" + nation:
+                    sea_list.append(i)
 
         if len(air_list) != 0:
             with open(air_path, 'w') as f:

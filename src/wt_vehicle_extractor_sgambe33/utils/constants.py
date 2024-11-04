@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-from utils.simple_functions import getJson
+from src.wt_vehicle_extractor_sgambe33.utils.simple_functions import getJson
 
 load_dotenv()
 
