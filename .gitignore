@@ -16,18 +16,18 @@ pyenv
 # Logs and output
 *.log
 out.json
-test.py
+src/wt_vehicle_extractor_sgambe33/test.py
 wpcost.json
 
 # Project-specific files
-/.env
+.env
 diff_viewer.py
 achievements.py
+test.py
 
 # Nation-specific JSON files
-/generatedAssets/nations/*/*FinalAircrafts.json
-/generatedAssets/nations/*/*FinalShips.json
-/generatedAssets/nations/*/*FinalTanks.json
+/generatedAssets
 
 # Images
 *.png
+/src/wt_vehicle_extractor_sgambe33/generatedAssets
