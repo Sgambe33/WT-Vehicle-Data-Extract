@@ -19,19 +19,6 @@ from src.wt_vehicle_extractor_sgambe33.utils.simple_functions import *
 from src.wt_vehicle_extractor_sgambe33.utils.update_localization import ALL_WEAPONS, ALL_AMMOS, ALL_EXPLOSIVES, ALL_AMMO_TYPES
 
 
-def get_vehicle_fetch_url(vehicle_name: str, unit_type_uri="/units/tankmodels"):
-    """Get URL endpoint of a specific vehicle
-
-    Args:
-        vehicle_name (str): Name of vehicle
-        unit_type_uri (str, optional): URI of the vehicle's type. Defaults to "/units/tankmodels".
-
-    Returns:
-        str: URL endpoint
-    """
-    return f"{URL_VROMFS}gamedata{unit_type_uri}/{vehicle_name.lower()}.blkx"
-
-
 def get_guns_url(gun_path: str):
     """Get URL endpoint of a specific gun
 
@@ -52,7 +39,7 @@ def create_vehicle(v_name: str, v_fetch_path: str) -> Vehicle | None:
     Returns:
         dict: Vehicle Object
     """
-    details: dict = myFetch(get_vehicle_fetch_url(v_name, v_fetch_path), True)
+    details: dict = my_fetch(f"{URL_VROMFS}gamedata{v_fetch_path}/{v_name.lower()}.blkx")
 
     data: Vehicle = create_vehicle_data(v_name, details, v_fetch_path, None)
     if data is None:
@@ -106,7 +93,7 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     vehicle.release_date = value_from_dict(value_from_dict(UNIT_TAGS, v_name), "releaseDate")
     if vehicle.release_date is not None:
         vehicle.release_date = vehicle.release_date.replace(" 00:00:00", "")
-    vehicle.version = get_game_version()
+    vehicle.version = GAME_VERSION
 
     vehicle.era = value_from_dict(vehicle_wpcost, "rank", 0)
     arcade_rank: int = value_from_dict(vehicle_wpcost, "economiceraArcade", value_from_dict(vehicle_wpcost, "economicRankArcade", 1))
@@ -124,10 +111,10 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     vehicle.req_exp = value_from_dict(vehicle_wpcost, "reqExp", 0)
     vehicle.ge_cost = value_from_dict(vehicle_wpcost, "costGold", 0)
 
-    vehicle.is_premium = True if vehicle.ge_cost > 0 else False
-    vehicle.squadron_vehicle = is_squadron_vehicle(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
+    vehicle.is_premium = vehicle.ge_cost > 0
+    vehicle.squadron_vehicle = dict_has_key_insensitive(vehicle_wpcost, "researchType")
     vehicle.on_marketplace = is_vehicle_on_marketplace(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
-    vehicle.is_pack = False if (vehicle.on_marketplace or vehicle.squadron_vehicle or not vehicle.is_premium) else is_pack(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
+    vehicle.is_pack = dict_has_key_insensitive(vehicle_wpcost, "gift")
 
     vehicle.crew_total_count = value_from_dict(vehicle_wpcost, "crewTotalCount", 0)
     vehicle.hull_armor = get_armor_thickness(v_details, vehicle_tags, "hull")
@@ -487,19 +474,19 @@ def create_weapon_details(weapon_path: str, count: int = 1, icon: str = None) ->
     if not weapon_path.endswith(".blk"):
         weapon_path += ".blk"
 
-    weapon_blkx: dict = myFetch(get_guns_url(weapon_path), True)
+    weapon_blkx: dict = my_fetch(get_guns_url(weapon_path), True)
 
     name_regex = re.findall(r".*\/(.*).blk", weapon_path)
 
     weapon_type = value_from_dict(weapon_blkx, "weaponType")
 
-    is_rocket: bool = value_from_dict(weapon_blkx, ROCKET_NAME) or dictHasKeyInsensitive(weapon_blkx, ROCKET_TYPE) or value_from_dict(weapon_blkx, ROCKET_TYPE)
-    is_cannon: bool = value_from_dict(weapon_blkx, CANNON_NAME) or dictHasKeyInsensitive(weapon_blkx, CANNON_TYPE) or value_from_dict(weapon_blkx, CANNON_TYPE) or weapon_type == -1 or weapon_type == 1 or weapon_type == 3
-    is_torpedo: bool = value_from_dict(weapon_blkx, TORPEDO_NAME) or dictHasKeyInsensitive(weapon_blkx, TORPEDO_TYPE) or value_from_dict(weapon_blkx, TORPEDO_TYPE) or weapon_type == 1
-    is_bomb: bool = value_from_dict(weapon_blkx, BOMB_NAME) or dictHasKeyInsensitive(weapon_blkx, BOMB_TYPE) or value_from_dict(weapon_blkx, BOMB_TYPE)
-    is_booster: bool = value_from_dict(weapon_blkx, BOOSTER_NAME) or dictHasKeyInsensitive(weapon_blkx, BOOSTER_TYPE) or value_from_dict(weapon_blkx, BOOSTER_TYPE)
-    is_container: bool = value_from_dict(weapon_blkx, CONTAINER_NAME) or dictHasKeyInsensitive(weapon_blkx, CONTAINER_TYPE) or value_from_dict(weapon_blkx, CONTAINER_TYPE)
-    is_extfueltank: bool = value_from_dict(weapon_blkx, EXTFUELTANK_NAME) or dictHasKeyInsensitive(weapon_blkx, EXTFUELTANK_TYPE) or value_from_dict(weapon_blkx, EXTFUELTANK_TYPE)
+    is_rocket: bool = value_from_dict(weapon_blkx, ROCKET_NAME) or dict_has_key_insensitive(weapon_blkx, ROCKET_TYPE) or value_from_dict(weapon_blkx, ROCKET_TYPE)
+    is_cannon: bool = value_from_dict(weapon_blkx, CANNON_NAME) or dict_has_key_insensitive(weapon_blkx, CANNON_TYPE) or value_from_dict(weapon_blkx, CANNON_TYPE) or weapon_type == -1 or weapon_type == 1 or weapon_type == 3
+    is_torpedo: bool = value_from_dict(weapon_blkx, TORPEDO_NAME) or dict_has_key_insensitive(weapon_blkx, TORPEDO_TYPE) or value_from_dict(weapon_blkx, TORPEDO_TYPE) or weapon_type == 1
+    is_bomb: bool = value_from_dict(weapon_blkx, BOMB_NAME) or dict_has_key_insensitive(weapon_blkx, BOMB_TYPE) or value_from_dict(weapon_blkx, BOMB_TYPE)
+    is_booster: bool = value_from_dict(weapon_blkx, BOOSTER_NAME) or dict_has_key_insensitive(weapon_blkx, BOOSTER_TYPE) or value_from_dict(weapon_blkx, BOOSTER_TYPE)
+    is_container: bool = value_from_dict(weapon_blkx, CONTAINER_NAME) or dict_has_key_insensitive(weapon_blkx, CONTAINER_TYPE) or value_from_dict(weapon_blkx, CONTAINER_TYPE)
+    is_extfueltank: bool = value_from_dict(weapon_blkx, EXTFUELTANK_NAME) or dict_has_key_insensitive(weapon_blkx, EXTFUELTANK_TYPE) or value_from_dict(weapon_blkx, EXTFUELTANK_TYPE)
 
     valid = weapon_type is not None or is_rocket or is_torpedo or is_cannon or is_bomb or is_booster or is_container or is_extfueltank
     if not valid:
@@ -508,7 +495,7 @@ def create_weapon_details(weapon_path: str, count: int = 1, icon: str = None) ->
 
     final_ammos: set[Ammo] = set()
 
-    all_weapons_keys = dictKeysToList(weapon_blkx)
+    all_weapons_keys = dict_keys_to_list(weapon_blkx)
     if is_cannon:
         icon = value_from_dict(weapon_blkx, "iconType")
         icon = icon[0] if type(icon) is list else icon
@@ -547,7 +534,7 @@ def get_ammos_by_weapon(weapon_type: str, all_weapons: dict, all_weapons_keys=[]
 
         if (isinstance(key_value, dict) or isinstance(key_value, list)) and key.lower() == weapon_type.lower():
             raw_ammo = key_value
-        elif isinstance(key_value, dict) and dictHasKeyInsensitive(key_value, weapon_type):
+        elif isinstance(key_value, dict) and dict_has_key_insensitive(key_value, weapon_type):
             raw_ammo = value_from_dict(key_value, weapon_type)
 
         if not raw_ammo:
@@ -616,7 +603,7 @@ def create_presets(v_details: dict, customizable: bool, has_offensive_weapons: b
             final_preset = Preset()
             final_preset.name = preset["name"]
             # Retrieve list of objects with inside: SLOT and PRESET (preset name)
-            preset_details = value_from_dict(myFetch(get_guns_url(preset["blk"]), True), "Weapon", [])
+            preset_details = value_from_dict(my_fetch(get_guns_url(preset["blk"]), True), "Weapon", [])
             if isinstance(preset_details, dict):
                 preset_details = [preset_details]
             for weapon_of_preset in preset_details:
@@ -653,7 +640,7 @@ def create_presets(v_details: dict, customizable: bool, has_offensive_weapons: b
         for preset in presets:
 
             blk = value_from_dict(preset, "blk")
-            preset = myFetch(get_guns_url(blk), True)
+            preset = my_fetch(get_guns_url(blk), True)
 
             if "_default" not in blk.lower() and "empty" not in blk.lower() and preset.get("Weapon") is not None:
                 final_preset = Preset()

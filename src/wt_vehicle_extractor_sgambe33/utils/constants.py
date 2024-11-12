@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-from src.wt_vehicle_extractor_sgambe33.utils.simple_functions import getJson
+from src.wt_vehicle_extractor_sgambe33.utils.simple_functions import my_fetch
 
 load_dotenv()
 
@@ -12,13 +12,14 @@ def read_game_version(version_path: str):
         return f.read()
 
 
-WPCOST = getJson(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/wpcost.blkx")
-UNIT_TAGS = getJson(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/unittags.blkx")
+GAME_VERSION = read_game_version(os.getenv("DATAMINE_LOCATION") + "/aces.vromfs.bin_u/version")
+WPCOST = my_fetch(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/wpcost.blkx")
+UNIT_TAGS = my_fetch(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/unittags.blkx")
 LANG_UNITS = (os.getenv("DATAMINE_LOCATION") + "/lang.vromfs.bin_u/lang/units.csv")
 LANG_WEAPONS = (os.getenv("DATAMINE_LOCATION") + "/lang.vromfs.bin_u/lang/units_weaponry.csv")
 URL_VROMFS = (os.getenv("DATAMINE_LOCATION") + "/aces.vromfs.bin_u/")
-SHOP = getJson(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/shop.blkx")
-MODIFICATIONS: dict = getJson(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/modifications.blkx")["modifications"]
+SHOP = my_fetch(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/shop.blkx")
+MODIFICATIONS: dict = my_fetch(os.getenv("DATAMINE_LOCATION") + "/char.vromfs.bin_u/config/modifications.blkx")["modifications"]
 
 COUNTRIES = ["britain", "china", "france", "germany", "israel", "italy", "japan", "sweden", "usa", "ussr"]
 

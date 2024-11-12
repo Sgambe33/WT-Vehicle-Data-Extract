@@ -13,7 +13,7 @@ load_dotenv(".env")
 
 
 def get_vehicle_by_country(country, fetch_uri, file_in_path, vehicle_type="VEHICLE", verbose=False):
-    all_vehicles = getJson(path.join("./generatedAssets/nations", country, file_in_path))
+    all_vehicles = my_fetch(path.join("./generatedAssets/nations", country, file_in_path))
 
     if all_vehicles is None:
         if verbose: cLogger.warning(f'{vehicle_type.upper()} doesn\'t have a file called {file_in_path}')
@@ -30,11 +30,10 @@ def get_vehicle_by_country(country, fetch_uri, file_in_path, vehicle_type="VEHIC
             final_vehicles.append(vehicle)
         except Exception as e:
             cLogger.error(f'Error creating {vehicle_type} {vehicle} -> {e}')
-            traceback.print_exc()
             return
 
-    with open(out_file, 'w') as f:
-        json.dump([o.toJson() for o in final_vehicles], f, indent=2)
+    with open(out_file, 'wb') as f:
+        f.write(orjson.dumps([o.toJson() for o in final_vehicles], option=orjson.OPT_INDENT_2))
 
 
 def process_country(nation, verbose):

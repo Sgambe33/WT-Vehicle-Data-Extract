@@ -1,43 +1,22 @@
-import json
 import os
+import mmap
+
+from orjson import orjson
 
 
-def myFetch(path, isLocal=False):
-    if not isLocal:
-        pass
+def my_fetch(path, isLocal=False):
     with open(path, "r") as f:
-        return json.load(f)
+        with mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ) as mm:
+            return orjson.loads(mm.read())
 
 
-def dictHasKeyInsensitive(dictionary: dict, keyName: str):
+def dict_has_key_insensitive(dictionary: dict, keyName: str):
     allKeys = [i.lower() for i in dictionary.keys()]
     return keyName.lower() in allKeys
 
 
-def dictKeysToList(d: dict):
+def dict_keys_to_list(d: dict):
     return [i for i in d.keys()]
-
-
-def dictValuesToList(d: dict):
-    return [i for i in d.values()]
-
-
-def printList(l):
-    for i in l:
-        print(i)
-
-
-def getJson(path):
-    data = None
-    if os.path.exists(path):
-        with open(path, 'r', encoding="UTF-8") as f:
-            data = json.load(f)
-    return data
-
-
-def get_game_version():
-    with open(os.getenv("DATAMINE_LOCATION") + "/aces.vromfs.bin_u/version", "r") as f:
-        return f.read()
 
 
 def value_from_dict(dictionary: dict, key: str, fall_back_value: any = None):
@@ -82,7 +61,7 @@ def traverse_shop(shop, lookup_key: str = None, lookup_attribute: str = "marketp
     return False
 
 
-def get_type_key(vehicle_type: str)-> str:
+def get_type_key(vehicle_type: str) -> str:
     type_key_mapping = {
         "fighter": "aviation",
         "assault": "aviation",
@@ -108,25 +87,10 @@ def get_type_key(vehicle_type: str)-> str:
         "submarine": "ships",
         "battleship": "ships"
     }
-    # This does nothin?
-    # type_key_mapping.update({ground_type: "army" for ground_type in ["light_tank", "medium_tank", "heavy_tank", "tank_destroyer", "spaa"]})
-
     return type_key_mapping.get(vehicle_type, "boats")
 
 
-def is_vehicle_on_marketplace(shop, identifier: str, country: str, vehicle_type:str) -> bool:
+def is_vehicle_on_marketplace(shop, identifier: str, country: str, vehicle_type: str) -> bool:
     country_key = "country_" + country
     type_key = get_type_key(vehicle_type)
     return traverse_shop(shop[country_key][type_key]["range"], identifier)
-
-
-def is_squadron_vehicle(shop, identifier: str, country: str, vehicle_type: str) -> bool:
-    country_key = "country_" + country
-    type_key = get_type_key(vehicle_type)
-    return traverse_shop(shop[country_key][type_key]["range"], identifier, "isClanVehicle")
-
-
-def is_pack(shop, identifier, country: str, vehicle_type: str) -> bool:
-    country_key = "country_" + country
-    type_key = get_type_key(vehicle_type)
-    return traverse_shop(shop[country_key][type_key]["range"], identifier, "gift")
