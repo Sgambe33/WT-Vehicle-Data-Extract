@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "example_package_YOUR_USERNAME_HERE"
+name = "wt_vehicle_extractor_sgambe33"
 version = "0.0.1"
 authors = [
-  { name="Example Author", email="author@example.com" },
+  { name="Sgambe33", email="studente.cosimo.sgambelluri@gmail.com" },
 ]
-description = "A small example package"
+description = "Python package to extract vehicle data from WT datamine"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -18,5 +18,5 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/pypa/sampleproject"
-Issues = "https://github.com/pypa/sampleproject/issues"
+Homepage = "https://github.com/Sgambe33/WT-Vehicle-Data-Extract"
+Issues = "https://github.com/Sgambe33/WT-Vehicle-Data-Extract/issues"
