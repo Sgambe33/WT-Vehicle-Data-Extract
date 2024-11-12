@@ -11,5 +11,5 @@ pytz==2024.2
 six==1.16.0
 tqdm==4.66.5
 tzdata==2024.2
-
+orjson>=3.10,<4
 pydantic~=2.9.2
