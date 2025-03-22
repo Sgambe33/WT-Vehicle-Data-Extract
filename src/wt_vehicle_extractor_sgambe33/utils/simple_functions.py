@@ -1,13 +1,20 @@
 import os
 import mmap
-
+import requests as req
 from orjson import orjson
 
 
-def my_fetch(path, isLocal=False):
-    with open(path, "r") as f:
-        with mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ) as mm:
-            return orjson.loads(mm.read())
+def fetch_file(path: str):
+    if(path.startswith("http")):
+        http_request = req.get(path)
+        if(http_request.status_code == 200):
+            return http_request.json()
+        else:
+            raise FileNotFoundError
+    else:    
+        with open(path, "r") as f:
+            with mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ) as mm:
+                return orjson.loads(mm.read())
 
 
 def dict_has_key_insensitive(dictionary: dict, keyName: str):

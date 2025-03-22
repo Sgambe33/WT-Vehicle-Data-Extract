@@ -30,18 +30,18 @@ def get_guns_url(gun_path: str):
     return f"{URL_VROMFS}{gun_path.lower()}x"
 
 
-def create_vehicle(v_name: str, v_fetch_path: str) -> Vehicle | None:
+def create_vehicle(vehicle_name: str, vehicle_fetch_path: str) -> Vehicle | None:
     """Create an Vehicle Object
 
     Args:
-        v_name (str): Vehicle's name
-        v_fetch_path (str): Vehicle's endpoint
+        vehicle_name (str): Vehicle's name
+        vehicle_fetch_path (str): Vehicle's endpoint
     Returns:
         dict: Vehicle Object
     """
-    details: dict = my_fetch(f"{URL_VROMFS}gamedata{v_fetch_path}/{v_name.lower()}.blkx")
+    details: dict = fetch_file(f"{URL_VROMFS}gamedata{vehicle_fetch_path}/{vehicle_name.lower()}.blkx")
 
-    data: Vehicle = create_vehicle_data(v_name, details, v_fetch_path, None)
+    data: Vehicle = create_vehicle_data(vehicle_name, details, vehicle_fetch_path, None)
     if data is None:
         return None
     return data
@@ -474,7 +474,7 @@ def create_weapon_details(weapon_path: str, count: int = 1, icon: str = None) ->
     if not weapon_path.endswith(".blk"):
         weapon_path += ".blk"
 
-    weapon_blkx: dict = my_fetch(get_guns_url(weapon_path), True)
+    weapon_blkx: dict = fetch_file(get_guns_url(weapon_path), True)
 
     name_regex = re.findall(r".*\/(.*).blk", weapon_path)
 
@@ -603,7 +603,7 @@ def create_presets(v_details: dict, customizable: bool, has_offensive_weapons: b
             final_preset = Preset()
             final_preset.name = preset["name"]
             # Retrieve list of objects with inside: SLOT and PRESET (preset name)
-            preset_details = value_from_dict(my_fetch(get_guns_url(preset["blk"]), True), "Weapon", [])
+            preset_details = value_from_dict(fetch_file(get_guns_url(preset["blk"]), True), "Weapon", [])
             if isinstance(preset_details, dict):
                 preset_details = [preset_details]
             for weapon_of_preset in preset_details:
@@ -640,7 +640,7 @@ def create_presets(v_details: dict, customizable: bool, has_offensive_weapons: b
         for preset in presets:
 
             blk = value_from_dict(preset, "blk")
-            preset = my_fetch(get_guns_url(blk), True)
+            preset = fetch_file(get_guns_url(blk), True)
 
             if "_default" not in blk.lower() and "empty" not in blk.lower() and preset.get("Weapon") is not None:
                 final_preset = Preset()
