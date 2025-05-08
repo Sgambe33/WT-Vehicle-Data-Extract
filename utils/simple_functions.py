@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 
 
 def myFetch(path, isLocal=False):
@@ -34,10 +35,21 @@ def getJson(path):
             data = json.load(f)
     return data
 
-
 def getVersion():
-    with open(os.getenv("DATAMINE_LOCATION") + "/aces.vromfs.bin_u/version", 'r') as f:
-        return f.read()
+    """Get the game version from the latest Git commit message."""
+    try:
+        commit_message = subprocess.check_output(
+            ["git", "log", "-1", "--pretty=%B"],
+            cwd=os.getenv("DATAMINE_LOCATION"),
+            text=True
+        ).strip()
+        return commit_message
+    except subprocess.CalledProcessError as e:
+        print(f"Error reading Git commit message: {e}")
+        return None
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return None
 
 
 def value_from_dict(dictionary: dict, key: str, fall_back_value: any = None):
