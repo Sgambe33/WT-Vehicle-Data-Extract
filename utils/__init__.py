@@ -201,7 +201,7 @@ def create_vehicle_data_engine(v_fetch_path: str, vehicle_phys: dict, vehicle_ta
 
     elif "flightmodels" in v_fetch_path:
         final_engine.max_speed_rb_sb = floor(value_from_dict(vehicle_tags, "maxSpeed", 0) * 3.6)
-        final_engine.max_reverse_speed_rb_sb = proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_AIR)
+        final_engine.max_speed_ab = proper_round(final_engine.max_speed_rb_sb * ENGINE_SPEED_AB_MUL_AIR)
 
     elif "tankmodels" in v_fetch_path:
         engine = value_from_dict(vehicle_phys, 'engine')
