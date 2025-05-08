@@ -20,13 +20,39 @@
         "date":"01-03-2024"
     },
     {
+        "updateName":"Alpha strike",
         "version":"2.35.1.112",
         "commithash": "246d8663535020979b09f8259ebf0d1db76df73a",
         "date":"31-05-2024"
     },
     {
-        "version":"2.37.0.164",
-        "commithash": "1846dd744d7f55a8b769839e41fb911f1cc33d70",
-        "date":"26-08-2024"
+        "updateName":"Seek and destroy",
+        "version":"2.37.0.169",
+        "commithash": "146a7bbf624c025800cdf15f77333fe28c2464f1",
+        "date":"29-08-2024"
+    },
+    {
+        "updateName":"Dance of dragons",
+        "version":"2.39.0.103",
+        "commithash": "a622305d4bb79eebe1df36851f8f0fc0aea8beca",
+        "date":"24-10-2024"
+    },
+    {
+        "updateName":"Firebirds",
+        "version":"2.41.0.65",
+        "commithash": "f383c71618c8b30ebb2758acf7572cf9e89802f6",
+        "date":"09-12-2024"    
+    },
+    {
+        "updateName":"Storm warning",
+        "version":"2.43.0.125",
+        "commithash":"672c183a75f46b482e80e8076b3e0b0e4c780991",
+        "date":"28-02-2025"
+    },
+    {
+        "updateName":"Hornet sting",
+        "version":"2.45",
+        "commithash":"master",
+        "date":"08-05-2025"
     }
 ]
