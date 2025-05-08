@@ -27,7 +27,7 @@ def get_vehicle_by_country(country, fetch_uri, file_in_path, vehicle_type="VEHIC
                 continue
             final_vehicles.append(vehicle)
         except Exception as e:
-            e.with_traceback()
+            e.with_traceback(None)
             cLogger.error(f'Error creating {vehicle_type} {vehicle} -> {e.with_traceback()}')
             continue
 
@@ -36,9 +36,9 @@ def get_vehicle_by_country(country, fetch_uri, file_in_path, vehicle_type="VEHIC
 
 
 def process_country(nation, verbose):
+    get_vehicle_by_country(nation, VEHICLE_FETCH_URI['air'], f'country_{nation}_air.json', 'Aircraft', verbose)
     get_vehicle_by_country(nation, VEHICLE_FETCH_URI['ground'], f'country_{nation}_ground.json', 'Tank', verbose)
     get_vehicle_by_country(nation, VEHICLE_FETCH_URI['sea'], f'country_{nation}_sea.json', 'Ship', verbose)
-    get_vehicle_by_country(nation, VEHICLE_FETCH_URI['air'], f'country_{nation}_air.json', 'Aircraft', verbose)
 
 
 def main(verbose: bool = False, use_multiprocessing: bool = True):
