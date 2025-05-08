@@ -27,6 +27,8 @@
    "it_battleship_conte_di_cavour",
    "it_battleship_leonardo_da_vinci",
    "it_cruiser_bolzano",
+   "it_battleship_francesco_caracciolo",
+   "it_destroyer_maestrale_class_grecale",
    "it_mas_classe500_3",
    "it_ms15_1a",
    "it_vas_baglietto_68t_1serie",
@@ -48,5 +50,7 @@
    "it_mc_485",
    "it_alano_9851",
    "it_albatros_class_f544",
-   "it_mas441"
+   "it_mas441",
+   "it_ms444",
+   "it_ciclone_class_ghibli"
 ]

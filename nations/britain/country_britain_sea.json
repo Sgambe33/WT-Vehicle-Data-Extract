@@ -45,6 +45,9 @@
    "uk_destroyer_daring_class_diamond",
    "uk_battlecruiser_queen_mary",
    "uk_battleship_q_elizabet_class_barham",
+   "uk_battlecruiser_repulse",
+   "uk_battleship_rodney",
+   "uk_battleship_q_elizabet_class_warspite",
    "uk_fairmile_c",
    "uk_fairmile_d_617_632",
    "uk_fairmile_d_601_616",
@@ -79,5 +82,6 @@
    "uk_frigate_whitby",
    "uk_destroyer_restigouche_class_terranova",
    "uk_gay_class_archer",
-   "uk_fremantle_class"
+   "uk_fremantle_class",
+   "uk_mtb35_vosper"
 ]

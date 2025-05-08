@@ -34,6 +34,8 @@
    "germ_battleship_sachsen",
    "germ_battleship_baden",
    "germ_battlecruiser_derfflinger",
+   "germ_destroyer_fletcher_zerstorer4",
+   "germ_battlecruiser_ersatz_yorck",
    "germ_s_100_s_174_class",
    "germ_ls_class",
    "germ_ls4_class",
@@ -67,5 +69,6 @@
    "germ_type153_pfeil",
    "germ_s_700_s_701",
    "germ_minelayer_drache",
-   "germ_kondor2_class"
+   "germ_kondor2_class",
+   "germ_schutze_class"
 ]

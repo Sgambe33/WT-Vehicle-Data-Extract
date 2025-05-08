@@ -1,4 +1,6 @@
 [
+   "spad_13",
+   "hp_12",
    "ucav_mq_1_predator_uk_killstreak",
    "jaguar_is",
    "jaguar_gr1a",
@@ -137,10 +139,13 @@
    "harrier_frs1_early",
    "harrier_frs1",
    "harrier_gr7",
+   "harrier_t10",
    "sea_harrier_fa2",
    "tornado_gr1",
+   "tornado_gr4",
    "tornado_f3",
    "tornado_f3_late",
+   "ef_2000_fgr4",
    "stirling_mk1",
    "stirling_mk3",
    "lincoln_b2",
@@ -155,6 +160,7 @@
    "wessex_mk5",
    "g_lynx",
    "lynx_ah_mk1",
+   "super_hind_mk3",
    "ah_2_rooivalk",
    "ah_mk1"
 ]

@@ -34,7 +34,9 @@
    "ussr_battleship_marat",
    "ussr_destroyer_pr45",
    "ussr_battleship_novorossiysk",
+   "ussr_battleship_arhangelsk",
    "ussr_battlecruiser_izmail",
+   "ussr_cruiser_omaha_class_murmansk",
    "ussr_1124_art",
    "ussr_1124_rct",
    "ussr_1124_ack",
@@ -76,5 +78,7 @@
    "ussr_mpk_pr1331m",
    "ussr_pr_183_egypt_bm_21",
    "ussr_mpk_204",
-   "ussr_mpk_pr11451"
+   "ussr_mpk_pr11451",
+   "ussr_pr253l",
+   "ussr_pr_103_sm4"
 ]

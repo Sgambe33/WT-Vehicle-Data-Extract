@@ -38,6 +38,10 @@
    "jp_battleship_yamashiro",
    "jp_battleship_mutsu",
    "jp_cruiser_haguro",
+   "jp_battlecruiser_amagi",
+   "jp_destroyer_murasame",
+   "jp_battlecruiser_kirishima",
+   "jp_destroyer_matsu",
    "jp_kusen_tei_13_1944",
    "jp_type_t1_1941",
    "jp_type38_1944",
@@ -65,5 +69,6 @@
    "jp_t51a",
    "jp_type7_pt808",
    "jp_yuri_class_asagao",
-   "jp_type1_pt2"
+   "jp_type1_pt2",
+   "jp_t14_class_mod02"
 ]

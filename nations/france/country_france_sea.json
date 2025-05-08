@@ -25,6 +25,9 @@
    "fr_destroyer_bourrasque_class_tornade",
    "fr_cruiser_chateaurenault_class_guichen",
    "fr_destroyer_mogador_class_mogador",
+   "fr_battleship_dunkerque",
+   "fr_cruiser_la_galissoniere_class_la_galissoniere",
+   "fr_battleship_strasbourg",
    "fr_vlt2",
    "fr_vlt1",
    "fr_mtb96_vosper",
@@ -37,5 +40,10 @@
    "fr_vtb13",
    "fr_p730_combattante",
    "fr_arras_class_arras",
-   "fr_frigate_croix_de_lorraine_class_la_surprise"
+   "fr_frigate_croix_de_lorraine_class_la_surprise",
+   "fr_flower_class_aconit",
+   "fr_marne_class_marne",
+   "fr_vtb12_mod",
+   "fr_vtb18",
+   "fr_arras_class_amiens"
 ]
