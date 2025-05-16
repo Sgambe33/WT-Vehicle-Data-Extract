@@ -29,7 +29,7 @@ class Vehicle:
         self.visibility: int  = 0
         self.hull_armor: list[int] = []
         self.turret_armor: list[int] = []
-        self.mass: int = 0.0
+        self.mass: int = 0
         self.train1_cost: int = 0
         self.train2_cost: int = 0
         self.train3_cost_gold: int = 0
