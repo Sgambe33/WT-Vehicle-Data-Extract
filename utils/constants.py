@@ -26,6 +26,7 @@ VEHICLE_FETCH_URI = {
     'ground': '/units/tankmodels',
     'sea': '/units/ships',
     'air': '/flightmodels',
+    'air_fm' : '/flightmodels/fm',
 }
 
 ENGINE_HP_AB_MUL_TANK = 1.908

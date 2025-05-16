@@ -136,11 +136,20 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     vehicle.turret_armor = value_from_dict(vehicle_tags, 'armorThicknessTurret', [])
 
     vehicle_phys_mass = value_from_dict(vehicle_phys, 'Mass', value_from_dict(vehicle_phys, 'mass'))
-    empty_mass = value_from_dict(vehicle_phys_mass, 'Empty', 0.0)
-    fuel_mass = value_from_dict(vehicle_phys_mass, 'Fuel', 0.0)
-    vehicle_wiki_general = value_from_dict(vehicle_wiki, 'general', value_from_dict(vehicle_wiki, 'General'))
-    normal_weight = value_from_dict(vehicle_wiki_general, 'normalWeight', 0.0)
-    vehicle.mass = empty_mass + fuel_mass + normal_weight
+    if vehicle_phys_mass is not None:
+        empty_mass = value_from_dict(vehicle_phys_mass, 'Empty', 0)
+        fuel_mass = value_from_dict(vehicle_phys_mass, 'Fuel', 0)
+        vehicle.mass = int (empty_mass + fuel_mass)
+    else:
+        fm_path: str = value_from_dict(v_details, "fmFile")
+        fm_key = fm_path.replace("fm/", "").replace(".blk", "") if fm_path else v_name
+        flight_model: dict = myFetch(get_vehicle_fetch_url(fm_key, VEHICLE_FETCH_URI['air_fm']), True)
+
+        mass_object: dict = value_from_dict(flight_model, 'Mass', {})
+        empty_mass = value_from_dict(mass_object, 'EmptyMass', 0)
+        fuel_mass = value_from_dict(mass_object, 'MaxFuelMass0', 0)
+        oil_mass = value_from_dict(mass_object, 'OilMass', 0)
+        vehicle.mass = int(empty_mass + fuel_mass + oil_mass)
 
     vehicle.train1_cost = value_from_dict(vehicle_data, 'trainCost', 0)
     vehicle.train2_cost = value_from_dict(vehicle_data, 'train2Cost', 0)
