@@ -51,8 +51,14 @@
     },
     {
         "updateName":"Hornet sting",
-        "version":"2.45",
+        "version":"2.45.1.111",
+        "commithash":"1c69ae7feb6e3104e97b9cd5a26460dd2fbd80",
+        "date":"30-05-2025"
+    },
+    {
+        "updateName":"Leviathans",
+        "version":"2.47.0.10",
         "commithash":"master",
-        "date":"08-05-2025"
+        "date":"25-06-2025"
     }
 ]
