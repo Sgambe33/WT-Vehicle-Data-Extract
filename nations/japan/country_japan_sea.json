@@ -15,6 +15,7 @@
    "jp_cruiser_mogami_mikuma",
    "jp_cruiser_tone",
    "jp_destroyer_shimakaze",
+   "jp_destroyer_yukikaze",
    "jp_battleship_settsu",
    "jp_armoredcruiser_ikoma",
    "jp_destroyer_satsuki",
@@ -42,6 +43,7 @@
    "jp_destroyer_murasame",
    "jp_battlecruiser_kirishima",
    "jp_destroyer_matsu",
+   "jp_battleship_yamato",
    "jp_kusen_tei_13_1944",
    "jp_type_t1_1941",
    "jp_type38_1944",
@@ -70,5 +72,6 @@
    "jp_type7_pt808",
    "jp_yuri_class_asagao",
    "jp_type1_pt2",
-   "jp_t14_class_mod02"
+   "jp_t14_class_mod02",
+   "jp_escort_hiburi_class_shisaka"
 ]
