@@ -28,7 +28,7 @@ def get_vehicle_by_country(country, fetch_uri, file_in_path, vehicle_type="VEHIC
             final_vehicles.append(vehicle)
         except Exception as e:
             e.with_traceback(None)
-            cLogger.error(f'Error creating {vehicle_type} {vehicle} -> {e.with_traceback()}')
+            cLogger.error(f'Error creating {vehicle_type} {vehicle} -> {e}', exc_info=True)
             continue
 
     with open(out_file, 'w') as f:

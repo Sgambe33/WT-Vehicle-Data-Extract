@@ -280,7 +280,7 @@ def create_vehicle_data_modifications(vehicle_wpcost: dict) -> set[Modification]
             modification.icon = value_from_dict(mod_dict, 'image')
             modification.mod_class = value_from_dict(mod_dict, 'modClass')
             if modification.icon is not None:
-                modification.icon = modification.icon.replace("#ui/gameuiskin#", "modifications/")
+                modification.icon = modification.icon.replace("#ui/gameuiskin#", "modifications/").replace("!", "").replace(".avif", "")
                 modification.icon += ".png"
         final_modifications.add(modification)
     return final_modifications
@@ -558,6 +558,8 @@ def create_ammo(raw_ammo: dict):
 
     # For localization
     if out.name is not None:
+        if type(out.name) is list:
+            out.name = out.name[0]
         ALL_AMMOS.add(out.name)
     if out.explosive_type is not None:
         ALL_EXPLOSIVES.add(explosive_type)

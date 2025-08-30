@@ -52,7 +52,7 @@ def getVersion():
         return None
 
 
-def value_from_dict(dictionary: dict, key: str, fall_back_value: any = None):
+def value_from_dict(dictionary: dict, key: str, fall_back_value: any = None) -> any:
     """Get value from a dictionary
 
     Args:
