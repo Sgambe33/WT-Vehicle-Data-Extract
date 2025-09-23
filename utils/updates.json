@@ -57,8 +57,14 @@
     },
     {
         "updateName":"Leviathans",
-        "version":"2.47.0.10",
-        "commithash":"master",
+        "version":"2.47.0.143",
+        "commithash":"768de0c993b959273d0b108831f04305d5144956",
         "date":"25-06-2025"
+    },
+    {
+        "updateName":"Tusk force",
+        "version":"2.49.0.23",
+        "commithash":"master",
+        "date":"23-09-2025"
     }
 ]

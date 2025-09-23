@@ -29,6 +29,7 @@
    "fr_cruiser_la_galissoniere_class_la_galissoniere",
    "fr_battleship_strasbourg",
    "fr_battleship_richelieu_class_richelieu",
+   "fr_cruiser_la_galissoniere_class_gloire",
    "fr_vlt2",
    "fr_vlt1",
    "fr_mtb96_vosper",
@@ -47,5 +48,7 @@
    "fr_marne_class_marne",
    "fr_vtb12_mod",
    "fr_vtb18",
-   "fr_arras_class_amiens"
+   "fr_arras_class_amiens",
+   "fr_marne_class_aisne",
+   "fr_adroit_class"
 ]
