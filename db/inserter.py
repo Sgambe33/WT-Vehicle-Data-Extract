@@ -39,6 +39,7 @@ def update_db():
                                     vehicle_data["version"] = current_version
                                     new_vehicles.append(vehicle_data)
                                 else:
+                                    #update the db vehicle with new data (does not affect old vehicles table)
                                     cLogger.info(f'{vehicle_data["identifier"]} version updated: {db_version} --> {current_version}')
                                     for key, value in vehicle_data.items():
                                         setattr(db_vehicle, key, value)
