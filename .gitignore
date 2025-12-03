@@ -25,9 +25,11 @@ diff_viewer.py
 achievements.py
 
 # Nation-specific JSON files
-/nations/*/*FinalAircrafts.json
-/nations/*/*FinalShips.json
-/nations/*/*FinalTanks.json
+*FinalAircrafts.json
+*FinalShips.json
+*FinalTanks.json
+
+/locales/*.json
 
 # Images
 *.png
