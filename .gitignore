@@ -29,7 +29,7 @@ achievements.py
 *FinalShips.json
 *FinalTanks.json
 
-/locales/*.json
+/locales
 
 # Images
 *.png
