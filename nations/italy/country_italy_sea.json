@@ -30,6 +30,11 @@
    "it_cruiser_bolzano",
    "it_battleship_francesco_caracciolo",
    "it_destroyer_maestrale_class_grecale",
+   "it_cruiser_cadorna_class_cadorna",
+   "it_battleship_littorio_class_littorio",
+   "it_cruiser_cadorna_class_diaz",
+   "it_destroyer_oriani_class_gioberti",
+   "it_destroyer_saetta",
    "it_mas_classe500_3",
    "it_ms15_1a",
    "it_vas_baglietto_68t_1serie",
@@ -54,5 +59,6 @@
    "it_mas441",
    "it_ms444",
    "it_ciclone_class_ghibli",
-   "it_mc492_baleno"
+   "it_mc492_baleno",
+   "it_cassiopea_p401"
 ]

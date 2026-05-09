@@ -30,6 +30,9 @@
    "fr_battleship_strasbourg",
    "fr_battleship_richelieu_class_richelieu",
    "fr_cruiser_la_galissoniere_class_gloire",
+   "fr_battleship_richelieu_class_clemenceau",
+   "fr_cruiser_suffren_class_suffren",
+   "fr_destroyer_guepard_class_verdun",
    "fr_vlt2",
    "fr_vlt1",
    "fr_mtb96_vosper",
@@ -50,5 +53,8 @@
    "fr_vtb18",
    "fr_arras_class_amiens",
    "fr_marne_class_aisne",
-   "fr_adroit_class"
+   "fr_adroit_class",
+   "fr_frigate_corse_class_brestois",
+   "fr_elan_class_commandant_domine",
+   "fr_frigate_corse_class_corse"
 ]
