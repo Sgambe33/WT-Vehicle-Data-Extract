@@ -607,6 +607,7 @@ def create_presets(v_details: dict, customizable: bool, has_offensive_weapons: b
                     for weapon in pylon_guns:
                         # Check if the weapon name is the same as the preset name
                         if weapon['name'] == weapon_of_preset['preset']:
+                            # TODO: add countermeasures parsing
                             if isinstance(weapon['Weapon'], dict) and ("dummy" not in value_from_dict(weapon['Weapon'], 'blk')):
                                 final_preset.weapons.append(create_weapon_details(weapon['Weapon']['blk']))
                             # TODO: Find an example for this?

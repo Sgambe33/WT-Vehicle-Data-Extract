@@ -2,11 +2,10 @@ import json
 import os
 import subprocess
 
-
 def myFetch(path, isLocal=False):
     if not isLocal:
         pass
-    with open(path, 'r') as f:
+    with open(path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
