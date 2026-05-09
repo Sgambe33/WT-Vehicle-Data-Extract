@@ -63,14 +63,26 @@
   },
   {
     "updateName": "Tusk force",
-    "version": "2.49.0.23",
-    "commithash": "master",
+    "version": "2.49.0.86",
+    "commithash": "a51592ba5e4e58c2236e91c25bc85c99a870f3d2",
     "date": "23-09-2025"
   },
   {
     "updateName": "Spearhead",
-    "version": "2.51.0.60",
-    "commithash": "master",
+    "version": "2.51.0.64",
+    "commithash": "ccdf938ccd771cc853f74d6085b67c4b2c4f2c46",
     "date": "11-11-2025"
+  },
+  {
+    "updateName": "Line of contact",
+    "version": "2.53.0.109",
+    "commithash": "5658dd57408e62b290bb36612baf9b616f51fdfc",
+    "date": "16-12-2025"
+  },
+  {
+    "updateName": "Ninth wave",
+    "version": "2.55.0.2",
+    "commithash": "master",
+    "date": "18-03-2026"
   }
 ]
