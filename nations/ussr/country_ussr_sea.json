@@ -39,6 +39,8 @@
    "ussr_cruiser_omaha_class_murmansk",
    "ussr_battleship_pr23_sovetskij_soyuz",
    "ussr_battlecruiser_sevastopol",
+   "ussr_destroyer_pr48k_erevan",
+   "ussr_battlecruiser_stalingrad",
    "ussr_1124_art",
    "ussr_1124_rct",
    "ussr_1124_ack",
@@ -83,5 +85,7 @@
    "ussr_mpk_pr11451",
    "ussr_pr253l",
    "ussr_pr_103_sm4",
-   "ussr_mpk_pr_1124"
+   "ussr_mpk_pr_1124",
+   "ussr_pr_205pe_k225",
+   "ussr_d3_tk126"
 ]

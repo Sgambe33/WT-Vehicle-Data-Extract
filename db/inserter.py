@@ -10,7 +10,7 @@ from .models import db, Vehicle, VehicleOld
 load_dotenv()
 
 
-def update_db():
+def update_db(verbose:bool=False):
     for country in COUNTRIES:
         cLogger.info(f'Updating {country}')
         for vehicle_category in ['Aircrafts', 'Tanks', 'Ships']:
@@ -40,7 +40,8 @@ def update_db():
                                     new_vehicles.append(vehicle_data)
                                 else:
                                     #update the db vehicle with new data (does not affect old vehicles table)
-                                    cLogger.info(f'{vehicle_data["identifier"]} version updated: {db_version} --> {current_version}')
+                                    if verbose:
+                                        cLogger.info(f'{vehicle_data["identifier"]} version updated: {db_version} --> {current_version}')
                                     for key, value in vehicle_data.items():
                                         setattr(db_vehicle, key, value)
                                     db_vehicle.version = current_version

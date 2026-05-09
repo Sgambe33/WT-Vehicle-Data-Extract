@@ -40,6 +40,9 @@
    "germ_battleship_bismarck",
    "germ_battlecruiser_mackensen_class",
    "germ_destroyer_class1942_z51",
+   "germ_battleship_konig",
+   "germ_destroyer_lutjens_class_lutjens",
+   "germ_destroyer_class1944_z52",
    "germ_s_100_s_174_class",
    "germ_ls_class",
    "germ_ls4_class",
@@ -74,5 +77,7 @@
    "germ_s_700_s_701",
    "germ_minelayer_drache",
    "germ_kondor2_class",
-   "germ_schutze_class"
+   "germ_schutze_class",
+   "germ_pr1331",
+   "germ_s30_s61"
 ]

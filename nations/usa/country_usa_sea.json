@@ -47,6 +47,11 @@
    "us_battleship_iowa_class_iowa",
    "us_battleship_colorado_class_maryland",
    "us_destroyer_cf_adams_class_cf_adams",
+   "us_cruiser_oregon_class",
+   "us_battleship_south_dakota",
+   "us_destroyer_forrestsherman_class",
+   "us_destroyer_bagley_class_helm",
+   "us_battleship_oklahoma",
    "us_elco_77ft_pt20",
    "us_huckins_78ft_pt95",
    "us_elco_80ft_pt_boat",
@@ -79,5 +84,7 @@
    "us_pt812",
    "us_frigate_dealey",
    "us_flagstaff_pgh1",
-   "us_frigate_buckley_class_coolbaugh"
+   "us_frigate_buckley_class_coolbaugh",
+   "us_huckins_78ft_pt262",
+   "us_pgm_9_class"
 ]

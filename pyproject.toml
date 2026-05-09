@@ -1,0 +1,15 @@
+[project]
+name = "wt-vehicle-data-extract"
+version = "0.1.0"
+description = "Extract interesting data from War Thunder datamine"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "asyncio>=4.0.0",
+    "deepdiff>=8.6.1",
+    "pandas>=2.3.3",
+    "peewee>=3.18.3",
+    "python-dateutil>=2.9.0.post0",
+    "python-dotenv>=1.2.1",
+    "tqdm>=4.67.1",
+]

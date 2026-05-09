@@ -51,6 +51,9 @@
    "uk_battleship_vanguard",
    "uk_battleship_nelson",
    "uk_destroyer_st_class_saumarez",
+   "uk_battleship_centurion",
+   "uk_battleship_prince_of_wales",
+   "uk_cruiser_fiji_class_fiji",
    "uk_fairmile_c",
    "uk_fairmile_d_617_632",
    "uk_fairmile_d_601_616",
@@ -87,5 +90,6 @@
    "uk_destroyer_restigouche_class_terranova",
    "uk_gay_class_archer",
    "uk_fremantle_class",
-   "uk_mtb35_vosper"
+   "uk_mtb35_vosper",
+   "uk_73ft_vosper_type1"
 ]

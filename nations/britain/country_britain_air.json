@@ -14,6 +14,7 @@
    "fa_18a_raaf",
    "fa_18a_hug_2_raaf",
    "cf_188a_canada",
+   "fa_18f_block_2_raaf",
    "b_48_firecrest",
    "dh_110_sea_vixen",
    "sea_hawk_fga6",
@@ -25,6 +26,7 @@
    "hurricanemkii",
    "mig-21_bison",
    "mosquito_fb_mk6",
+   "mosquito_b_mk16",
    "mosquito_nf_mk2",
    "mosquito_tr_mk33",
    "brigand_b1",
@@ -153,6 +155,9 @@
    "tornado_f3_late",
    "tornado_ids_de_assta1_britain_killstreak",
    "ef_2000_fgr4",
+   "ef_2000_typhoon_aesa",
+   "hawk_200",
+   "hawk_200_rda",
    "stirling_mk1",
    "stirling_mk3",
    "lincoln_b2",
@@ -168,6 +173,7 @@
    "g_lynx",
    "lynx_ah_mk1",
    "super_hind_mk3",
+   "ah_64e_britain",
    "ah_2_rooivalk",
    "ah_mk1"
 ]

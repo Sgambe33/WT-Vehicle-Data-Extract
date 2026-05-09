@@ -27,9 +27,9 @@ def update_dataset():
     del wpcost["economicRankMax"]
 
     for n in tqdm(COUNTRIES):
-        air_list = []
-        ground_list = []
-        sea_list = []
+        air_list: list = []
+        ground_list: list = []
+        sea_list: list = []
         country_dir = os.path.abspath("./nations/" + n)
 
         if not os.path.exists(country_dir):
@@ -55,7 +55,7 @@ def update_dataset():
             with open(air_path, "w") as f:
                 json.dump(air_list, f, indent=3)
 
-        if len(ground_list) != 0:
+        if  len(ground_list) != 0:
             with open(ground_path, "w") as f:
                 json.dump(ground_list, f, indent=3)
 
@@ -105,7 +105,8 @@ def update_images() -> None:
 
 
 def valid_mod_icon(file: str) -> bool:
-    """Check if the icon is valid for a modification.
+    """
+    Check if the icon is valid for a modification.
 
     Returns:
         bool: True if the icon is valid, False otherwise.

@@ -45,7 +45,14 @@
    "jp_destroyer_matsu",
    "jp_battleship_yamato",
    "jp_minelayer_tsugaru",
+   "jp_battleship_nagato",
    "jp_battlecruiser_hiei",
+   "jp_battleship_musashi",
+   "jp_battleship_tosa",
+   "jp_cruiser_oyodo",
+   "jp_destroyer_tade",
+   "jp_destroyer_kagero",
+   "jp_destroyer_suzutsuki",
    "jp_kusen_tei_13_1944",
    "jp_type_t1_1941",
    "jp_type38_1944",
@@ -75,5 +82,6 @@
    "jp_yuri_class_asagao",
    "jp_type1_pt2",
    "jp_t14_class_mod02",
-   "jp_escort_hiburi_class_shisaka"
+   "jp_escort_hiburi_class_shisaka",
+   "jp_pc301_kari_class"
 ]
