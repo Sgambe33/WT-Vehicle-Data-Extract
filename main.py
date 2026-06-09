@@ -78,7 +78,7 @@ def count_total_items():
         f'country_{{}}_sea.json'
     ]
 
-    print("Calculating total workload...")
+    cLogger.info("Counting total vehicles to process...")
     for nation in COUNTRIES:
         for file_template in types:
             fname = get_file_path(nation, file_template.format(nation))
@@ -95,8 +95,7 @@ def count_total_items():
 
 async def main_async(verbose: bool = False):
     total_vehicles: int = await asyncio.to_thread(count_total_items)
-    print(f"Starting processing for approximately {total_vehicles} vehicles.")
-
+    cLogger.info(f"Starting processing for approximately {total_vehicles} vehicles.")
     with tqdm(total=total_vehicles, unit="vehicle", desc="Processing") as pbar:
         tasks = [process_country_async(nation, pbar, verbose) for nation in COUNTRIES]
         await asyncio.gather(*tasks)
