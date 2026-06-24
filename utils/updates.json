@@ -1,38 +1,42 @@
 [
   {
+    "updateName": "La Royale",
     "version": "2.27.2.59",
     "commithash": "b0f14ce5d7100d530d7fca6ead0084c532a1c7a5",
     "date": "14-06-2023"
   },
   {
+    "updateName": "Sons of Attila",
     "version": "2.29.0.111",
     "commithash": "2dee8ab5051080420404bf1c3b22c6ecc582f384",
     "date": "20-10-2023"
   },
   {
+    "updateName": "Kings of Battle",
     "version": "2.31.1.65",
     "commithash": "25ba8b85db22a4a4509e5ca3b741f52f173d54c7",
     "date": "07-12-2023"
   },
   {
+    "updateName": "Air Superiority",
     "version": "2.33.0.161",
     "commithash": "55cedfc96eb727532cb83c854ed9df5cb6d7d41c",
     "date": "01-03-2024"
   },
   {
-    "updateName": "Alpha strike",
+    "updateName": "Alpha Strike",
     "version": "2.35.1.112",
     "commithash": "246d8663535020979b09f8259ebf0d1db76df73a",
     "date": "31-05-2024"
   },
   {
-    "updateName": "Seek and destroy",
+    "updateName": "Seek and Destroy",
     "version": "2.37.0.169",
     "commithash": "146a7bbf624c025800cdf15f77333fe28c2464f1",
     "date": "29-08-2024"
   },
   {
-    "updateName": "Dance of dragons",
+    "updateName": "Dance of Dragons",
     "version": "2.39.0.103",
     "commithash": "a622305d4bb79eebe1df36851f8f0fc0aea8beca",
     "date": "24-10-2024"
@@ -44,13 +48,13 @@
     "date": "09-12-2024"
   },
   {
-    "updateName": "Storm warning",
+    "updateName": "Storm Warning",
     "version": "2.43.0.125",
     "commithash": "672c183a75f46b482e80e8076b3e0b0e4c780991",
     "date": "28-02-2025"
   },
   {
-    "updateName": "Hornet sting",
+    "updateName": "Hornet Sting",
     "version": "2.45.1.111",
     "commithash": "1c69ae7feb6e3104e97b9cd5a26460dd2fbd80",
     "date": "30-05-2025"
@@ -62,7 +66,7 @@
     "date": "25-06-2025"
   },
   {
-    "updateName": "Tusk force",
+    "updateName": "Tusk Force",
     "version": "2.49.0.86",
     "commithash": "a51592ba5e4e58c2236e91c25bc85c99a870f3d2",
     "date": "23-09-2025"
@@ -74,15 +78,21 @@
     "date": "11-11-2025"
   },
   {
-    "updateName": "Line of contact",
+    "updateName": "Line of Contact",
     "version": "2.53.0.109",
     "commithash": "5658dd57408e62b290bb36612baf9b616f51fdfc",
     "date": "16-12-2025"
   },
   {
-    "updateName": "Ninth wave",
-    "version": "2.55.0.2",
-    "commithash": "master",
+    "updateName": "Ninth Wave",
+    "version": "2.55.1.153",
+    "commithash": "a3ee0504e5046792ca2b716b40abaa5b797493d6",
     "date": "18-03-2026"
+  },
+  {
+    "updateName": "Heavy Cavalry",
+    "version": "2.57.0.8",
+    "commithash": "master",
+    "date": "22-06-2026"
   }
 ]
