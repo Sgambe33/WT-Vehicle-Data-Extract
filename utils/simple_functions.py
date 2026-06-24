@@ -132,10 +132,12 @@ def is_vehicle_on_marketplace(shop, identifier, country, vehicle_type) -> bool:
     return traverse_shop(shop[country_key][type_key]["range"], identifier)
 
 
-def is_squadron_vehicle(shop, identifier, country, vehicle_type) -> bool:
+def is_squadron_vehicle(shop, wpcost, identifier, country, vehicle_type) -> bool:
     country_key = "country_" + country
     type_key = get_type_key(vehicle_type)
-    return traverse_shop(shop[country_key][type_key]["range"], identifier, "isClanVehicle")
+    shop_result = traverse_shop(shop[country_key][type_key]["range"], identifier, "isClanVehicle")
+    wpcost_result = value_from_dict(wpcost[identifier], "researchType", False) 
+    return (shop_result or (wpcost_result == "clanVehicle"))
 
 
 def is_pack(shop, identifier, country, vehicle_type) -> bool:

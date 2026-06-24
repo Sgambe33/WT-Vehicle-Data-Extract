@@ -127,7 +127,7 @@ def create_vehicle_data(v_name: str, v_details: dict, v_fetch_path, vehicle_type
     vehicle.req_exp = value_from_dict(vehicle_data, 'reqExp', 0)
     vehicle.is_premium = True if value_from_dict(vehicle_data, 'costGold') is not None else False
 
-    vehicle.squadron_vehicle = is_squadron_vehicle(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
+    vehicle.squadron_vehicle = is_squadron_vehicle(SHOP, WPCOST, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
     vehicle.on_marketplace = is_vehicle_on_marketplace(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
     vehicle.is_pack = False if (vehicle.on_marketplace or vehicle.squadron_vehicle or not vehicle.is_premium) else is_pack(SHOP, vehicle.identifier, vehicle.country, vehicle.vehicle_type)
     vehicle.ge_cost = value_from_dict(vehicle_data, 'costGold', 0)
